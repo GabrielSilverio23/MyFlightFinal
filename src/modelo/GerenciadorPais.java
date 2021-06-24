@@ -1,5 +1,6 @@
 package modelo;
 
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -7,18 +8,18 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 
-public class GerenciadorCias {
+public class GerenciadorPais {
 
-    private Map<String, CiaAerea> empresas;
+    private Map<String, Pais> pais;
 
-    public GerenciadorCias() {
+    public GerenciadorPais() {
 //        this.empresas = new HashMap<>();
 //        this.empresas = new TreeMap<>();
-        this.empresas = new LinkedHashMap<>();
+        this.pais = new LinkedHashMap<>();
     }
 
-    public ArrayList<CiaAerea> listarTodas() {
-        return new ArrayList<>(empresas.values());
+    public ArrayList<Pais> listarTodas() {
+        return new ArrayList<>(pais.values());
     }
 
     public void carregaDados(String nomeArq) throws IOException {
@@ -30,29 +31,17 @@ public class GerenciadorCias {
             while (sc.hasNext()) {
                 cod = sc.next();
                 nome = sc.next();
-                CiaAerea nova = new CiaAerea(cod, nome);
+                Pais nova = new Pais(cod, nome);
                 adicionar(nova);
                 //System.out.format("%s - %s (%s)%n", nome, data, cpf);
             }
         }
     }
-
-    public void adicionar(CiaAerea cia1) {
-        empresas.put(cia1.getCodigo(),cia1);
+    public void adicionar(Pais pais1) {
+        pais.put(pais1.getCodigo(),pais1);
     }
 
-    public CiaAerea buscarCodigo(String cod) {
-        //return empresas.get(cod);
-        for(CiaAerea cia: empresas.values())
-            if(cia.getCodigo().equals(cod))
-                return cia;
-        return null;
-    }
-
-    public CiaAerea buscarNome(String nome) {
-        for(CiaAerea cia: empresas.values())
-            if(cia.getNome().equals(nome))
-                return cia;
-        return null;
+    public Pais buscarCodigo(String cod) {
+        return pais.get(cod);
     }
 }

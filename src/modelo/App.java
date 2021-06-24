@@ -10,7 +10,8 @@ public class App {
 
     public static void main(String[] args) {
 
-        GerenciadorCias gerCias = new GerenciadorCias();
+        //le arquivo airlines.dat
+        /*GerenciadorCias gerCias = new GerenciadorCias();
 
         try {
             gerCias.carregaDados("airlines.dat");
@@ -21,7 +22,7 @@ public class App {
         ArrayList<CiaAerea> todasCias = gerCias.listarTodas();
         System.out.println("Total cias:"+todasCias.size());
         for(CiaAerea cia: todasCias)
-            System.out.println(cia.getCodigo()+" - "+cia.getNome());
+            System.out.println(cia.getCodigo()+" - "+cia.getNome());*/
 
 		/*
 		gerCias.adicionar(new CiaAerea("JJ", "LATAM Linhas Aéreas"));
@@ -30,23 +31,48 @@ public class App {
 		gerCias.adicionar(new CiaAerea("AD", "Azul Linhas Aéreas"));
 		*/
 
+        //le arquivo equipment.dat
         GerenciadorAeronaves gerAvioes = new GerenciadorAeronaves();
 
-        gerAvioes.adicionar(new Aeronave("733", "Boeing 737-300", 140));
+        /*try {
+            gerAvioes.carregaDados("equipment.dat");
+        } catch (IOException e) {
+            System.out.println("Não foi possível ler equipment.dat!");
+//            System.exit(1);
+        }
+        ArrayList<Aeronave> todasAeronaves = gerAvioes.listarTodas();
+        System.out.println("Total aeronaves:"+todasAeronaves.size());
+        for(Aeronave nav: todasAeronaves)
+            System.out.println(nav.getCodigo()+" - "+nav.getDescricao()+" - "+nav.getCapacidade());*/
+
+        /*gerAvioes.adicionar(new Aeronave("733", "Boeing 737-300", 140));
         gerAvioes.adicionar(new Aeronave("73G", "Boeing 737-400", 126));
         gerAvioes.adicionar(new Aeronave("380", "Airbus Industrie A380", 644));
-        gerAvioes.adicionar(new Aeronave("764", "Boeing 767-400", 304));
-        gerAvioes.ordenarDescricao();
+        gerAvioes.adicionar(new Aeronave("764", "Boeing 767-400", 304));*/
+
+        //gerAvioes.ordenarDescricao();
 //        gerAvioes.ordenarCodigo();
         // Listando em ordem alfabética de descrição:
-        System.out.println("\nAeronaves:");
+
+        /*System.out.println("\nAeronaves:");
         for(Aeronave av: gerAvioes.listarTodas())
             System.out.println(av);
-        System.out.println();
-
+        System.out.println();*/
+        //le o arquivo airports.dat
         GerenciadorAeroportos gerAero = new GerenciadorAeroportos();
 
-        gerAero.adicionar(new Aeroporto("POA", "Salgado Filho Intl",
+        try {
+            gerAero.carregaDados("airports.dat");
+        } catch (IOException e) {
+            System.out.println("Não foi possível ler airports.dat!");
+//            System.exit(1);
+        }
+        ArrayList<Aeroporto> todosAeroportos = gerAero.listarTodas();
+        System.out.println("Total aeroportos:"+todosAeroportos.size());
+        for(Aeroporto ap: todosAeroportos)
+            System.out.println(ap.getCodigo()+" - "+ap.getNome()+" - "+ap.getLocal()+" - "+ap.getPaisId());
+
+        /*gerAero.adicionar(new Aeroporto("POA", "Salgado Filho Intl",
                 new Geo(-29.9939, -51.1711)));
         gerAero.adicionar(new Aeroporto("GRU", "São Paulo Guarulhos Intl",
                 new Geo(-23.4356, -46.4731)));
@@ -81,10 +107,27 @@ public class App {
                 Geo.distancia(poa.getLocal(), gru.getLocal()));
 
         System.out.println("Distâcia GRU->POA: " +
-                gru.getLocal().distancia(poa.getLocal()));
+                gru.getLocal().distancia(poa.getLocal()));*/
 
-        GerenciadorRotas gerRotas = new GerenciadorRotas();
+        //System.out.println(gerAvioes.buscarCodigo("318"));
+        //le o arquivo routes.dat
+        /*GerenciadorRotas gerRotas = new GerenciadorRotas();
 
+        try {
+            gerRotas.carregaDados("routes.dat");
+        } catch (IOException e) {
+            System.out.println("Não foi possível ler airports.dat!");
+//            System.exit(1);
+        }
+        ArrayList<Rota> todasRotas = gerRotas.listarTodas();
+        System.out.println("Total rotas:"+todasRotas.size());
+        for(Rota rt: todasRotas)
+            System.out.println(rt.getCia()+" - "+rt.getOrigem()+" - "+rt.getDestino()+" - "+rt.getAeronave());*/
+
+
+
+
+/*
         Rota poagru = new Rota(latam, poa, gru, b733);
         Rota grupoa = new Rota(latam, gru, poa, b733);
         Rota grumia = new Rota(tap, gru, mia, a380);
@@ -171,6 +214,6 @@ public class App {
 //            System.out.println(v);
             Aeroporto origem = v.getRota().getOrigem();
             System.out.println(origem.getNome() + ": " + origem.getLocal());
-        }
+        }*/
     }
 }

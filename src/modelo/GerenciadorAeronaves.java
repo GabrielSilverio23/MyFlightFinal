@@ -1,12 +1,15 @@
 package modelo;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
 
 public class GerenciadorAeronaves {
 
-    private ArrayList<Aeronave> avioes;
+    /*private ArrayList<Aeronave> avioes;
 
     public GerenciadorAeronaves() {
         this.avioes = new ArrayList<>();
@@ -18,16 +21,46 @@ public class GerenciadorAeronaves {
 
     public ArrayList<Aeronave> listarTodas() {
         return new ArrayList<>(avioes);
+    }*/
+
+    private Map<String, Aeronave> avioes;
+
+    public GerenciadorAeronaves() {
+//        this.empresas = new HashMap<>();
+//        this.empresas = new TreeMap<>();
+        this.avioes = new LinkedHashMap<>();
     }
 
-    public Aeronave buscarCodigo(String codigo) {
-        for(Aeronave a: avioes)
-            if(a.getCodigo().equals(codigo))
-                return a;
-        return null;
+    public ArrayList<Aeronave> listarTodas() {
+        return new ArrayList<>(avioes.values());
     }
 
-    public void ordenarDescricao() {
+    public void carregaDados(String nomeArq) throws IOException {
+        Path path = Paths.get(nomeArq);
+        try (Scanner sc = new Scanner(Files.newBufferedReader(path, Charset.forName("utf8")))) {
+            sc.useDelimiter("[;\n]"); // separadores: ; e nova linha
+            String header = sc.nextLine(); // pula cabeçalho
+            String cod, descricao;
+            int capacidade;
+            while (sc.hasNext()) {
+                cod = sc.next();
+                descricao = sc.next();
+                capacidade = sc.nextInt();
+                Aeronave nova = new Aeronave(cod, descricao, capacidade);
+                adicionar(nova);
+                //System.out.format("%s - %s (%s)%n", nome, data, cpf);
+            }
+        }
+    }
+    public void adicionar(Aeronave nav1) {
+        avioes.put(nav1.getCodigo(),nav1);
+    }
+
+    public Aeronave buscarCodigo(String cod) {
+        return avioes.get(cod);
+    }
+
+    /*public void ordenarDescricao() {
         // Usando Comparable<Aeronave> em Aeronave
         //Collections.sort(avioes);
 
@@ -51,5 +84,5 @@ public class GerenciadorAeronaves {
     public void ordenarCodigo() {
         avioes.sort( (Aeronave a1, Aeronave a2) ->
                 a1.getCodigo().compareTo(a2.getCodigo()));
-    }
+    }*/
 }
