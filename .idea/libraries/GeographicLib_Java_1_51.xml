@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="GeographicLib-Java-1.51">
+    <CLASSES>
+      <root url="jar://C:/GeographicLib-Java-1.51.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
