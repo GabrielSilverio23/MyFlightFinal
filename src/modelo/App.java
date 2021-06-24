@@ -11,7 +11,7 @@ public class App {
     public static void main(String[] args) {
 
         //le arquivo airlines.dat
-        /*GerenciadorCias gerCias = new GerenciadorCias();
+        GerenciadorCias gerCias = GerenciadorCias.getInstance();
 
         try {
             gerCias.carregaDados("airlines.dat");
@@ -21,20 +21,15 @@ public class App {
         }
         ArrayList<CiaAerea> todasCias = gerCias.listarTodas();
         System.out.println("Total cias:"+todasCias.size());
-        for(CiaAerea cia: todasCias)
-            System.out.println(cia.getCodigo()+" - "+cia.getNome());*/
+//        for(CiaAerea cia: todasCias)
+//            System.out.println(cia.getCodigo()+" - "+cia.getNome());
 
-		/*
-		gerCias.adicionar(new CiaAerea("JJ", "LATAM Linhas Aéreas"));
-		gerCias.adicionar(new CiaAerea("G3", "Gol Linhas Aéreas S/A"));
-		gerCias.adicionar(new CiaAerea("TP", "TAP Portugal"));
-		gerCias.adicionar(new CiaAerea("AD", "Azul Linhas Aéreas"));
-		*/
+
+
 
         //le arquivo equipment.dat
-        GerenciadorAeronaves gerAvioes = new GerenciadorAeronaves();
-
-        /*try {
+        GerenciadorAeronaves gerAvioes = GerenciadorAeronaves.getInstance();
+        try {
             gerAvioes.carregaDados("equipment.dat");
         } catch (IOException e) {
             System.out.println("Não foi possível ler equipment.dat!");
@@ -42,25 +37,32 @@ public class App {
         }
         ArrayList<Aeronave> todasAeronaves = gerAvioes.listarTodas();
         System.out.println("Total aeronaves:"+todasAeronaves.size());
-        for(Aeronave nav: todasAeronaves)
-            System.out.println(nav.getCodigo()+" - "+nav.getDescricao()+" - "+nav.getCapacidade());*/
+//        for(Aeronave nav: todasAeronaves)
+//            System.out.println(nav.getCodigo()+" - "+nav.getDescricao()+" - "+nav.getCapacidade());
 
-        /*gerAvioes.adicionar(new Aeronave("733", "Boeing 737-300", 140));
-        gerAvioes.adicionar(new Aeronave("73G", "Boeing 737-400", 126));
-        gerAvioes.adicionar(new Aeronave("380", "Airbus Industrie A380", 644));
-        gerAvioes.adicionar(new Aeronave("764", "Boeing 767-400", 304));*/
 
-        //gerAvioes.ordenarDescricao();
-//        gerAvioes.ordenarCodigo();
-        // Listando em ordem alfabética de descrição:
 
-        /*System.out.println("\nAeronaves:");
-        for(Aeronave av: gerAvioes.listarTodas())
-            System.out.println(av);
-        System.out.println();*/
+
+        //le o arquivo countries.dat
+        GerenciadorPais gp = GerenciadorPais.getInstance();
+
+        try {
+            gp.carregaDados("countries.dat");
+        } catch (IOException e) {
+            System.out.println("Não foi possível ler countries.dat!");
+//            System.exit(1);
+        }
+        ArrayList<Pais> todosPaises = gp.listarTodas();
+        System.out.println("Total Paises:"+todosPaises.size());
+//        for(Pais p: todosPaises)
+//            System.out.println(p.getCodigo()+" - "+p.getNome());
+
+
+
+
+
         //le o arquivo airports.dat
-        GerenciadorAeroportos gerAero = new GerenciadorAeroportos();
-
+        GerenciadorAeroportos gerAero = GerenciadorAeroportos.getInstance();
         try {
             gerAero.carregaDados("airports.dat");
         } catch (IOException e) {
@@ -69,49 +71,14 @@ public class App {
         }
         ArrayList<Aeroporto> todosAeroportos = gerAero.listarTodas();
         System.out.println("Total aeroportos:"+todosAeroportos.size());
-        for(Aeroporto ap: todosAeroportos)
-            System.out.println(ap.getCodigo()+" - "+ap.getNome()+" - "+ap.getLocal()+" - "+ap.getPaisId());
+//        for(Aeroporto ap: todosAeroportos)
+//            System.out.println(ap.getCodigo()+" - "+ap.getNome()+" - "+ap.getLocal()+" - "+ap.getPais().getCodigo());
 
-        /*gerAero.adicionar(new Aeroporto("POA", "Salgado Filho Intl",
-                new Geo(-29.9939, -51.1711)));
-        gerAero.adicionar(new Aeroporto("GRU", "São Paulo Guarulhos Intl",
-                new Geo(-23.4356, -46.4731)));
-        gerAero.adicionar(new Aeroporto("LIS", "Lisbon",
-                new Geo(38.7742, -9.1342)));
-        gerAero.adicionar(new Aeroporto("MIA", "Miami Intl Airport",
-                new Geo(25.7933, -80.2906)));
-        gerAero.ordenarNomes();
 
-        System.out.println("\nAeroportos ordenados por nome:\n");
-        for(Aeroporto a: gerAero.listarTodos())
-            System.out.println(a);
-        System.out.println();
 
-        // Para facilitar a criação de rotas:
 
-        CiaAerea latam = gerCias.buscarCodigo("JJ");
-        CiaAerea gol   = gerCias.buscarCodigo("G3");
-        CiaAerea tap   = gerCias.buscarCodigo("TP");
-        CiaAerea azul  = gerCias.buscarCodigo("AD");
-
-        Aeronave b733 = gerAvioes.buscarCodigo("733");
-        Aeronave b73g = gerAvioes.buscarCodigo("73G");
-        Aeronave a380 = gerAvioes.buscarCodigo("380");
-
-        Aeroporto poa = gerAero.buscarCodigo("POA");
-        Aeroporto gru = gerAero.buscarCodigo("GRU");
-        Aeroporto lis = gerAero.buscarCodigo("LIS");
-        Aeroporto mia = gerAero.buscarCodigo("MIA");
-
-        System.out.println("Distância POA->GRU: "+
-                Geo.distancia(poa.getLocal(), gru.getLocal()));
-
-        System.out.println("Distâcia GRU->POA: " +
-                gru.getLocal().distancia(poa.getLocal()));*/
-
-        //System.out.println(gerAvioes.buscarCodigo("318"));
         //le o arquivo routes.dat
-        /*GerenciadorRotas gerRotas = new GerenciadorRotas();
+        GerenciadorRotas gerRotas = GerenciadorRotas.getInstance();
 
         try {
             gerRotas.carregaDados("routes.dat");
@@ -121,8 +88,8 @@ public class App {
         }
         ArrayList<Rota> todasRotas = gerRotas.listarTodas();
         System.out.println("Total rotas:"+todasRotas.size());
-        for(Rota rt: todasRotas)
-            System.out.println(rt.getCia()+" - "+rt.getOrigem()+" - "+rt.getDestino()+" - "+rt.getAeronave());*/
+//        for(Rota rt: todasRotas)
+//            System.out.println(rt.getCia().getCodigo()+" - "+rt.getOrigem().getCodigo()+" - "+rt.getDestino().getCodigo()+" - "+rt.getAeronave().getCodigo());
 
 
 

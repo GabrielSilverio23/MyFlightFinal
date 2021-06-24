@@ -20,10 +20,12 @@
 321;Airbus Industrie A321;185
 32A;Airbus Industrie A320-200 (Sharklets);150
 32B;Airbus Industrie A321-200 (Sharklets);199
+32C;Airbus Industrie A318-200 (Sharklets);132
 32S;Airbus Industrie A318/319/320/321;130
 330;Airbus Industrie A330;253
 332;Airbus Industrie A330-200;293
 333;Airbus Industrie A330-300;335
+33X;Airbus Industrie A330-200;293
 340;Airbus Industrie A340;300
 342;Airbus Industrie A340-200;300
 343;Airbus Industrie A340-300;335
@@ -86,6 +88,7 @@
 74J;Boeing 747-400 Domestic;416
 74L;Boeing 747SP;280
 74M;Boeing 747 Combi;505
+74N;Boeing 747-8F;467
 74T;Boeing 747-100 Freighter;385
 74U;Boeing 747-300 Freighter;422
 74V;Boeing 747SR Freighter;385
@@ -111,6 +114,7 @@
 777;Boeing 777;368
 77L;Boeing 777-200LR;451
 77W;Boeing 777-300ER;451
+77X;Boeing 777-200 Freighter;320
 787;Boeing 787;289
 788;Boeing 787-8;289
 A26;Antonov An-26;50

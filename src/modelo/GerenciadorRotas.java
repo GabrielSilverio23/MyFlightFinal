@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class GerenciadorRotas {
 
-    private Map<String, Rota> rotas;
+    /*private Map<String, Rota> rotas;
 
     public GerenciadorRotas() {
 //        this.empresas = new HashMap<>();
@@ -35,9 +36,9 @@ public class GerenciadorRotas {
                 ignore = sc.next();
                 ignore = sc.next();
                 av = sc.next();
-                GerenciadorCias ciaa = new GerenciadorCias();
-                GerenciadorAeroportos ap = new GerenciadorAeroportos();
-                GerenciadorAeronaves an = new GerenciadorAeronaves();
+                GerenciadorCias ciaa = GerenciadorCias.getInstance();
+                GerenciadorAeroportos ap = GerenciadorAeroportos.getInstance();
+                GerenciadorAeronaves an = GerenciadorAeronaves.getInstance();
 
                 Rota nova = new Rota(ciaa.buscarCodigo(cia), ap.buscarCodigo(apo), ap.buscarCodigo(apd), an.buscarCodigo(av));
                 adicionar(nova);
@@ -51,7 +52,7 @@ public class GerenciadorRotas {
 
     public Rota buscarCodigo(String cod) {
         return rotas.get(cod);
-    }
+    }*/
 
     /*private ArrayList<Rota> rotas;
 
@@ -100,4 +101,75 @@ public class GerenciadorRotas {
                 result.add(r);
         return result;
     }*/
+    private ArrayList<Rota> listaRotas;
+
+    private GerenciadorRotas(){
+        listaRotas = new ArrayList<Rota>();
+    }
+
+    private static GerenciadorRotas instance;
+
+    public static GerenciadorRotas getInstance(){
+        if(instance == null)
+            instance = new GerenciadorRotas();
+        return instance;
+    }
+
+    public void carregaDados(String nomeArq) throws IOException {
+        Path path = Paths.get(nomeArq);
+        try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("utf8"))) {
+            String line = null;
+            String header = reader.readLine();
+            while ((line = reader.readLine())!=null) {
+                String [] dados = line.split(";");
+                String cia = dados[0];
+                String apo = dados[1];
+                String apd = dados[2];
+                String av = dados[5].substring(0,3);
+                GerenciadorCias gcia = GerenciadorCias.getInstance();
+                GerenciadorAeroportos gap = GerenciadorAeroportos.getInstance();
+                GerenciadorAeronaves gav = GerenciadorAeronaves.getInstance();
+                Rota novo = new Rota(gcia.buscarCodigo(cia), gap.buscarCodigo(apo), gap.buscarCodigo(apd), gav.buscarCodigo(av));
+                inserir(novo);
+                //System.out.format("%s - %s (%s)%n", nome, data, cpf);
+            }
+        }
+    }
+
+    public void inserir(Rota p){
+        listaRotas.add(p);
+    }
+
+    public Rota buscarCia(String codigo) {
+        for(Rota r: listaRotas) {
+            if (codigo.equalsIgnoreCase(r.getCia().getCodigo()))
+                return r;
+        }
+        return null;
+    }
+    public Rota buscarOrigem(String codigo) {
+        for(Rota r: listaRotas) {
+            if (codigo.equalsIgnoreCase(r.getOrigem().getCodigo()))
+                return r;
+        }
+        return null;
+    }
+    public Rota buscarDestino(String codigo) {
+        for(Rota r: listaRotas) {
+            if (codigo.equalsIgnoreCase(r.getDestino().getCodigo()))
+                return r;
+        }
+        return null;
+    }
+    public Rota buscarAeronave(String codigo) {
+        for(Rota r: listaRotas) {
+            if (codigo.equalsIgnoreCase(r.getAeronave().getCodigo()))
+                return r;
+        }
+        return null;
+    }
+
+    public ArrayList<Rota> listarTodas() {
+        return new ArrayList<>(listaRotas);
+    }
 }

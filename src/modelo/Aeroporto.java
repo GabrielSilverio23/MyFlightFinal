@@ -31,7 +31,7 @@ public class Aeroporto implements Comparable<Aeroporto> {
         return loc;
     }
 
-    public Pais getPaisId() {
+    public Pais getPais() {
         return pais;
     }
 

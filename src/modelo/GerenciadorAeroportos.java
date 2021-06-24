@@ -1,5 +1,6 @@
 package modelo;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -9,21 +10,7 @@ import java.util.*;
 
 public class GerenciadorAeroportos {
 
-    /*private ArrayList<Aeroporto> aeroportos;
-
-    public GerenciadorAeroportos() {
-        this.aeroportos = new ArrayList<>();
-    }
-
-    public void ordenarNomes() {
-        Collections.sort(aeroportos);
-    }
-
-    public void adicionar(Aeroporto aero) {
-        aeroportos.add(aero);
-    }*/
-
-    private Map<String, Aeroporto> aeroportos;
+    /*private Map<String, Aeroporto> aeroportos;
 
     public GerenciadorAeroportos() {
 //        this.empresas = new HashMap<>();
@@ -37,20 +24,19 @@ public class GerenciadorAeroportos {
 
     public void carregaDados(String nomeArq) throws IOException {
         Path path = Paths.get(nomeArq);
-        try (Scanner sc = new Scanner(Files.newBufferedReader(path, Charset.forName("utf8")))) {
-            sc.useDelimiter("[;\n]"); // separadores: ; e nova linha
-            String header = sc.nextLine(); // pula cabeçalho
-            String cod, nome, pais, lat, lon;
-            //double lat, lon;
-            while (sc.hasNext()) {
-                cod = sc.next();
-                lat = sc.next();
-                lon = sc.next();
-                nome = sc.next();
-                pais = sc.next();
-                GerenciadorPais gp = new GerenciadorPais();
-                Pais p = new Pais(gp.buscarCodigo(pais).getCodigo(), gp.buscarCodigo(pais).getNome());
-                Aeroporto nova = new Aeroporto(cod, nome, new Geo(Double.parseDouble(lat),Double.parseDouble(lon)), p);
+        try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("utf8"))) {
+            String line = null;
+            String header = reader.readLine();
+            while ((line = reader.readLine())!=null) {
+                String [] dados = line.split(";");
+                String cod = dados[0];
+                double lat = Double.parseDouble(dados[1]);
+                double lon = Double.parseDouble(dados[2]);
+                String nome = dados[3];
+                String pais = dados[4];
+                GerenciadorPais gp = GerenciadorPais.getInstance();
+                //Pais x = gp.buscarCodigo(pais);
+                Aeroporto nova = new Aeroporto(cod, nome, new Geo(lat, lon), gp.buscarCodigo(pais));
                 adicionar(nova);
                 //System.out.format("%s - %s (%s)%n", nome, data, cpf);
             }
@@ -62,6 +48,56 @@ public class GerenciadorAeroportos {
 
     public Aeroporto buscarCodigo(String cod) {
         return aeroportos.get(cod);
+    }*/
+
+    private ArrayList<Aeroporto> listaAeroporto;
+
+    private GerenciadorAeroportos(){
+        listaAeroporto = new ArrayList<Aeroporto>();
+    }
+
+    private static GerenciadorAeroportos instance;
+
+    public static GerenciadorAeroportos getInstance(){
+        if(instance == null)
+            instance = new GerenciadorAeroportos();
+        return instance;
+    }
+
+    public void carregaDados(String nomeArq) throws IOException {
+        Path path = Paths.get(nomeArq);
+        try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("utf8"))) {
+            String line = null;
+            String header = reader.readLine();
+            while ((line = reader.readLine())!=null) {
+                String [] dados = line.split(";");
+                String cod = dados[0];
+                double lat = Double.parseDouble(dados[1]);
+                double lon = Double.parseDouble(dados[2]);
+                String nome = dados[3];
+                String pais = dados[4];
+                GerenciadorPais gp = GerenciadorPais.getInstance();
+                Aeroporto novo = new Aeroporto(cod, nome, new Geo(lat, lon), gp.buscarCodigo(pais));
+                inserir(novo);
+                //System.out.format("%s - %s (%s)%n", nome, data, cpf);
+            }
+        }
+    }
+
+    public void inserir(Aeroporto p){
+        listaAeroporto.add(p);
+    }
+
+    public Aeroporto buscarCodigo(String codigo) {
+        for(Aeroporto p: listaAeroporto) {
+            if (p.getCodigo().equals(codigo))
+                return p;
+        }
+        return null;
+    }
+
+    public ArrayList<Aeroporto> listarTodas() {
+        return new ArrayList<>(listaAeroporto);
     }
 
     /*public ArrayList<Aeroporto> listarTodos() {
