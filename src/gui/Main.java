@@ -21,9 +21,18 @@ import modelo.*;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.TextField;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 
 public class Main extends Application {
@@ -33,6 +42,7 @@ public class Main extends Application {
     private GerenciadorAeroportos gerAero;
     private GerenciadorRotas gerRotas;
     private GerenciadorAeronaves gerAvioes;
+    private GerenciadorPais gerPais;
 
     private GerenciadorMapa gerenciador;
 
@@ -73,11 +83,19 @@ public class Main extends Application {
         leftPane.add(btnConsulta4, 4, 0);
 
         btnConsulta1.setOnAction(e -> {
-            consulta1();
+            consulta1("5Q");
+        });
+
+        btnConsulta2.setOnAction(e -> {
+            consulta2("5Q");
+        });
+
+        btnConsulta4.setOnAction(e -> {
+            consulta4();
         });
 
         pane.setCenter(mapkit);
-        pane.setTop(leftPane);
+        pane.setLeft(leftPane);
 
         Scene scene = new Scene(pane, 500, 500);
         primaryStage.setScene(scene);
@@ -88,47 +106,87 @@ public class Main extends Application {
 
     // Inicializando os dados aqui...
     private void setup() {
-
         gerCias = GerenciadorCias.getInstance();
         gerAero = GerenciadorAeroportos.getInstance();
         gerRotas = GerenciadorRotas.getInstance();
         gerAvioes = GerenciadorAeronaves.getInstance();
+        gerPais = GerenciadorPais.getInstance();
+        try {
+            gerAero.carregaDados("airports.dat");
+            gerCias.carregaDados("airlines.dat");
+            gerRotas.carregaDados("routes.dat");
+            gerAvioes.carregaDados("equipment.dat");
+            gerPais.carregaDados("countries.dat");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    private void consulta1() {
+    private void consulta1(String cod){
+        List<MyWaypoint> lstPoints = new ArrayList<>();
+        gerenciador.clear();
+        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
+        // waypoints
+        for (Aeroporto airport : gerRotas.airportsByAirlinesFrom(cod)) {
+            lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
+        }
+        // Para obter um ponto clicado no mapa, usar como segue:
+        GeoPosition pos = gerenciador.getPosicao();
+        // Informa o resultado para o gerenciador
+        gerenciador.setPontos(lstPoints);
+        // Quando for o caso de limpar os traçados...
+        //gerenciador.clear();
+        gerenciador.getMapKit().repaint();
+    }
+
+    private void consulta2(String cod){
+        List<MyWaypoint> lstPoints = new ArrayList<>();
+        gerenciador.clear();
+        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
+        // waypoints
+        for (Aeroporto airport : gerRotas.airportsByAirlinesTo(cod)) {
+            lstPoints.add(new MyWaypoint(Color.BLUE, airport.getCodigo(), airport.getLocal(), 10));
+        }
+        // Para obter um ponto clicado no mapa, usar como segue:
+        GeoPosition pos = gerenciador.getPosicao();
+        // Informa o resultado para o gerenciador
+        gerenciador.setPontos(lstPoints);
+        // Quando for o caso de limpar os traçados...
+        //gerenciador.clear();
+        gerenciador.getMapKit().repaint();
+    }
+
+    private void consulta4() {
 
         //Lista para armazenar o resultado da consulta
         List<MyWaypoint> lstPoints = new ArrayList<>();
-
-        Aeroporto poa = new Aeroporto("POA", "Salgado Filho", new Geo(-29.9939, -51.1711));
-        Aeroporto gru = new Aeroporto("GRU", "Guarulhos", new Geo(-23.4356, -46.4731));
-        Aeroporto lis = new Aeroporto("LIS", "Lisbon", new Geo(38.772,-9.1342));
-        Aeroporto mia = new Aeroporto("MIA", "Miami International", new Geo(25.7933, -80.2906));
-
         gerenciador.clear();
-        Tracado tr = new Tracado();
-        tr.setLabel("Teste");
-        tr.setWidth(5);
-        tr.setCor(new Color(0,0,0,60));
-        tr.addPonto(poa.getLocal());
-        tr.addPonto(mia.getLocal());
-
-        gerenciador.addTracado(tr);
-
-        Tracado tr2 = new Tracado();
-        tr2.setWidth(5);
-        tr2.setCor(Color.BLUE);
-        tr2.addPonto(gru.getLocal());
-        tr2.addPonto(lis.getLocal());
-        gerenciador.addTracado(tr2);
+//        Tracado tr = new Tracado();
+//        tr.setLabel("Teste");
+//        tr.setWidth(10);
+//        tr.setCor(new Color(0,0,0,60));
+//        tr.addPonto(poa.getLocal());
+//        tr.addPonto(mia.getLocal());
+//
+//        gerenciador.addTracado(tr);
+//
+//        Tracado tr2 = new Tracado();
+//        tr2.setWidth(5);
+//        tr2.setCor(Color.BLUE);
+//        tr2.addPonto(gru.getLocal());
+//        tr2.addPonto(lis.getLocal());
+//        gerenciador.addTracado(tr2);
 
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
 
-        lstPoints.add(new MyWaypoint(Color.RED, poa.getCodigo(), poa.getLocal(), 5));
-        lstPoints.add(new MyWaypoint(Color.RED, gru.getCodigo(), gru.getLocal(), 5));
-        lstPoints.add(new MyWaypoint(Color.RED, lis.getCodigo(), lis.getLocal(), 5));
-        lstPoints.add(new MyWaypoint(Color.RED, mia.getCodigo(), mia.getLocal(), 5));
+        for(Aeroporto ap: gerAero.listarTodas()) {
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getCodigo(), ap.getLocal(), 15));
+        }
+//        lstPoints.add(new MyWaypoint(Color.RED, poa.getCodigo(), poa.getLocal(), 15));
+//        lstPoints.add(new MyWaypoint(Color.RED, gru.getCodigo(), gru.getLocal(), 5));
+//        lstPoints.add(new MyWaypoint(Color.RED, lis.getCodigo(), lis.getLocal(), 5));
+//        lstPoints.add(new MyWaypoint(Color.RED, mia.getCodigo(), mia.getLocal(), 5));
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();

@@ -1,10 +1,17 @@
 package modelo;
 
+import gui.GerenciadorMapa;
+import gui.Main;
+import gui.MyWaypoint;
+import org.jxmapviewer.viewer.GeoPosition;
+
+import java.awt.*;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class App {
 
@@ -62,6 +69,7 @@ public class App {
 
 
         //le o arquivo airports.dat
+//        GerenciadorAeroportos gerAero = GerenciadorAeroportos.getInstance();
         GerenciadorAeroportos gerAero = GerenciadorAeroportos.getInstance();
         try {
             gerAero.carregaDados("airports.dat");
@@ -92,7 +100,56 @@ public class App {
 //            System.out.println(rt.getCia().getCodigo()+" - "+rt.getOrigem().getCodigo()+" - "+rt.getDestino().getCodigo()+" - "+rt.getAeronave().getCodigo());
 
 
+//        ArrayList<Aeroporto> x = gerRotas.airportsByAirlines("5Q");
+//        for(Aeroporto lst: x) {
+//            System.out.println(lst.getLocal()+"\n");
+//        }
 
+        //List<MyWaypoint> lstAirport = new ArrayList<>();
+        List<Aeroporto> airports1 = gerRotas.airportsByAirlinesFrom("5Q");
+        List<Aeroporto> airports = new ArrayList<>();
+        //System.out.println(airports);
+//        for(Aeroporto lst: airports) {
+//            lstPoints.add(lst);
+//        }
+//        for(Aeroporto lst: airports) {
+//            System.out.println(lst.getCodigo());
+//        }
+
+
+        GerenciadorPais gerPais = GerenciadorPais.getInstance();
+        List<MyWaypoint> lstPoints = new ArrayList<>();
+
+        Aeroporto poa = new Aeroporto("POA", "Salgado Filho", new Geo(-29.9939, -51.1711), gerPais.buscarCodigo("BR"));
+//        Aeroporto poa = new Aeroporto(gerAero.buscarCodigo("POA"));
+        Aeroporto gru = new Aeroporto("GRU", "Guarulhos", new Geo(-23.4356, -46.4731), gerPais.buscarCodigo("BR"));
+//        Aeroporto gru = new Aeroporto(gerAero.buscarCodigo("GRU"));
+        Aeroporto lis = new Aeroporto("LIS", "Lisbon", new Geo(38.772,-9.1342), gerPais.buscarCodigo("PT"));
+//        Aeroporto lis = new Aeroporto(gerAero.buscarCodigo("LIS"));
+        Aeroporto mia = new Aeroporto("MIA", "Miami International", new Geo(25.7933, -80.2906), gerPais.buscarCodigo("US"));
+//        Aeroporto mia = new Aeroporto(gerAero.buscarCodigo("MIA"));
+        airports.add(gerAero.buscarCodigo("POA"));
+        airports.add(gru);
+        airports.add(lis);
+        airports.add(mia);
+        airports.add(gerAero.buscarCodigo("AAC"));
+        airports.add(gerAero.buscarCodigo("ACK"));
+
+        System.out.println(airports);
+
+        for(Aeroporto lst: airports1) {
+            System.out.println(lst.getCodigo() + lst.getLocal());
+
+        }
+
+        Aeroporto x = gerAero.buscarCodigo("ACK");
+        System.out.println(x);
+
+        List<Aeroporto> t1 = gerRotas.airportsByAirlinesFrom("5Q");
+
+        for(Aeroporto lst: t1) {
+            System.out.println(lst.getCodigo() + lst.getLocal());
+        }
 
 /*
         Rota poagru = new Rota(latam, poa, gru, b733);

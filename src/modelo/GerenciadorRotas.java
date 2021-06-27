@@ -2,11 +2,14 @@ package modelo;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 public class GerenciadorRotas {
 
@@ -101,7 +104,11 @@ public class GerenciadorRotas {
                 result.add(r);
         return result;
     }*/
+
+
+
     private ArrayList<Rota> listaRotas;
+    List<Aeroporto> aeroportos = new ArrayList<>();
 
     private GerenciadorRotas(){
         listaRotas = new ArrayList<Rota>();
@@ -116,6 +123,7 @@ public class GerenciadorRotas {
     }
 
     public void carregaDados(String nomeArq) throws IOException {
+        HashMap<CiaAerea, HashSet<Aeroporto>> aps = new HashMap<CiaAerea, HashSet<Aeroporto>>();
         Path path = Paths.get(nomeArq);
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("utf8"))) {
             String line = null;
@@ -129,6 +137,13 @@ public class GerenciadorRotas {
                 GerenciadorCias gcia = GerenciadorCias.getInstance();
                 GerenciadorAeroportos gap = GerenciadorAeroportos.getInstance();
                 GerenciadorAeronaves gav = GerenciadorAeronaves.getInstance();
+//                if(aps.containsKey(apo))
+//                    (aps.get(apo)).add(gap.buscarCodigo(apd));
+//                else{
+//                    HashSet<Aeroporto> aux = new HashSet<>();
+//                    aux.add(gap.buscarCodigo(apd));
+//                    aps.put(gcia.buscarCodigo(apo), aux);
+//                }
                 Rota novo = new Rota(gcia.buscarCodigo(cia), gap.buscarCodigo(apo), gap.buscarCodigo(apd), gav.buscarCodigo(av));
                 inserir(novo);
                 //System.out.format("%s - %s (%s)%n", nome, data, cpf);
@@ -168,6 +183,34 @@ public class GerenciadorRotas {
         }
         return null;
     }
+
+    public List<Aeroporto> airportsByAirlinesFrom(String cod){
+        for(Rota r: listaRotas) {
+            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                aeroportos.add(r.getOrigem());
+        }
+        aeroportos = aeroportos.stream().distinct().collect(Collectors.toList());
+        return aeroportos;
+    }
+
+    public List<Aeroporto> airportsByAirlinesTo(String cod){
+        for(Rota r: listaRotas) {
+            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                aeroportos.add(r.getDestino());
+        }
+        aeroportos = aeroportos.stream().distinct().collect(Collectors.toList());
+        return aeroportos;
+    }
+
+    public List<Aeroporto> frequency(String cod){
+        for(Rota r: listaRotas) {
+            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                aeroportos.add(r.getDestino());
+        }
+        aeroportos = aeroportos.stream().distinct().collect(Collectors.toList());
+        return aeroportos;
+    }
+
 
     public ArrayList<Rota> listarTodas() {
         return new ArrayList<>(listaRotas);

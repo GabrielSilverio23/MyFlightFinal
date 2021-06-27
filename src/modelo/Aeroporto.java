@@ -11,6 +11,12 @@ public class Aeroporto implements Comparable<Aeroporto> {
         this.nome = nome;
         this.loc = loc;
     }
+    public Aeroporto(Aeroporto ap) {
+        this.codigo = ap.getCodigo();
+        this.nome = ap.getNome();
+        this.loc = ap.getLocal();
+        this.pais = ap.getPais();
+    }
 
     public Aeroporto(String codigo, String nome, Geo loc, Pais p) {
         this.codigo = codigo;
@@ -37,7 +43,7 @@ public class Aeroporto implements Comparable<Aeroporto> {
 
     @Override
     public String toString() {
-        return codigo + " - " + nome + " [" + loc + "]" + pais.getCodigo();
+        return codigo + " - " + nome + " [" + loc + "]" +" - "+pais.getCodigo();
     }
 
     @Override

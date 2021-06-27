@@ -11,5 +11,6 @@
     <orderEntry type="library" name="jxmapviewer" level="project" />
     <orderEntry type="library" name="GeographicLib-Java-1.51" level="project" />
     <orderEntry type="library" name="lib" level="project" />
+    <orderEntry type="library" name="javafx-swing-11" level="project" />
   </component>
 </module>
