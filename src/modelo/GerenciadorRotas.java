@@ -14,9 +14,10 @@ import java.util.stream.Collectors;
 
 public class GerenciadorRotas {
 
+    //private static GerenciadorRotas cbp = new GerenciadorRotas();
+
     private ArrayList<Rota> listaRotas;
     List<Aeroporto> aeroportos = new ArrayList<>();
-    List<Pais> pais = new LinkedList<Pais>();
 
     private GerenciadorRotas(){
         listaRotas = new ArrayList<Rota>();
@@ -92,23 +93,7 @@ public class GerenciadorRotas {
         return null;
     }
 
-    public List<Pais> loadPaisOrigem(String cod){
-        for(Rota r: listaRotas) {
-            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
-                pais.add(r.getOrigem().getPais());
-        }
-        pais = pais.stream().distinct().collect(Collectors.toList());
-        return pais;
-    }
 
-    public List<Pais> loadPaisDestino(String cod){
-        for(Rota r: listaRotas) {
-            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
-                pais.add(r.getDestino().getPais());
-        }
-        pais = pais.stream().distinct().collect(Collectors.toList());
-        return pais;
-    }
 
     public List<Aeroporto> airportsByAirlinesFrom(String cod){
         for(Rota r: listaRotas) {
@@ -127,11 +112,19 @@ public class GerenciadorRotas {
 //        aeroportos = aeroportos.stream().distinct().collect(Collectors.toList());
         return aeroportos;
     }
-    public ObservableList getPais(){
-        return FXCollections.observableList(pais);
+
+
+    public ObservableList listaRota(String cod){
+        List<Pais> lr = new ArrayList<>();
+        for(Rota r: listaRotas) {
+            if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                lr.add(r.getOrigem().getPais());
+        }
+        lr = lr.stream().distinct().collect(Collectors.toList());
+        return FXCollections.observableList(lr);
     }
 
-    public List<Rota> listaRota(String cod){
+    public List<Rota> listaRota2(String cod){
         List<Rota> lr = new ArrayList<>();
         for(Rota r: listaRotas) {
             if (r.getCia().getCodigo().equalsIgnoreCase(cod))
@@ -144,4 +137,36 @@ public class GerenciadorRotas {
     public ArrayList<Rota> listarTodas() {
         return new ArrayList<>(listaRotas);
     }
+
+
+
+    public List<Pais> loadPais(String cod, String sentido){
+        List<Pais> pais = new LinkedList<Pais>();
+
+        if(sentido.equalsIgnoreCase("partida")){
+            for(Rota r: listaRotas) {
+                if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                    pais.add(r.getOrigem().getPais());
+            }
+            pais = pais.stream().distinct().collect(Collectors.toList());
+            return pais;
+        }else{
+            for(Rota r: listaRotas) {
+                if (r.getCia().getCodigo().equalsIgnoreCase(cod))
+                    pais.add(r.getDestino().getPais());
+            }
+            pais = pais.stream().distinct().collect(Collectors.toList());
+            return pais;
+        }
+    }
+//
+//    private List<String> paises;
+//
+//    private GerenciadorRotas(String cod, String sentido){
+//        paises = loadPais(cod, sentido);
+//    }
+//
+//    public ObservableList getPais(){
+//        return FXCollections.observableList(paises);
+//    }
 }

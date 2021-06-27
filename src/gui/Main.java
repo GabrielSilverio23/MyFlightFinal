@@ -73,52 +73,111 @@ public class Main extends Application {
         leftPane.setVgap(10);
         leftPane.setPadding(new Insets(10, 10, 10, 10));
 
+        String codCia, sentido, selPais;
+
         //Text tfTitulo = new Text("Informe o código da Cia. Aerea:");
-        Label lCodAirport = new Label("Cia. Aerea:");
+        Label lCodCia = new Label("Cia. Aerea:");
 
         //ComboBox cbIda = new ComboBox("Origem");
 
         //ComboBox cbVolta = new ComboBox(gerRotas.airportsByAirlinesTo(codAirport));
         //String codCia;
-        Button btnConsulta1 = new Button("Origem");
-        Button btnConsulta2 = new Button("Destino");
+        Button btnConsulta1 = new Button("Buscar");
+        Button btnConsulta2 = new Button("Consulta 2");
         Button btnConsulta3 = new Button("Consulta 3");
         Button btnConsulta4 = new Button("Consulta 4");
-        TextField txtCodAirport = new TextField();
-        ComboBox pais;
+        TextField txtCodCia = new TextField();
+        ComboBox paisOrigem = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
+        ComboBox paisDestino = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
+
         String codp;
 
-        ToggleGroup rbPartCheg = new ToggleGroup();
-        RadioButton rbPartida = new RadioButton("Partida");
-        rbPartida.setToggleGroup(rbPartCheg);
-        RadioButton rbChegada = new RadioButton("Chegada");
-        rbChegada.setToggleGroup(rbPartCheg);
-        rbPartida.setSelected(true);
-        leftPane.add(rbPartida,0,2);
-        leftPane.add(rbChegada,1,2);
+//        ToggleGroup rbPartCheg = new ToggleGroup();
+//        RadioButton rbPartida = new RadioButton("Partida");
+//        rbPartida.setToggleGroup(rbPartCheg);
+//        RadioButton rbChegada = new RadioButton("Chegada");
+//        rbChegada.setToggleGroup(rbPartCheg);
+//        rbPartida.setSelected(true);
+//        leftPane.add(rbPartida,0,2);
+//        leftPane.add(rbChegada,1,2);
 
-        pais = new ComboBox(gerRotas.getPais());
+        //pais = new ComboBox(PaisesData.getInstance().getListaPais());
 
-        leftPane.add(lCodAirport, 0, 0);
-        leftPane.add(txtCodAirport, 0, 1);
-        leftPane.add(new Label("Origem:"), 0, 3);
-        leftPane.add(pais, 1, 3);
-        leftPane.add(btnConsulta1, 0, 4);
-        leftPane.add(btnConsulta2, 1, 5);
-        leftPane.add(btnConsulta3, 0, 6);
-        leftPane.add(btnConsulta4, 0, 7);
-        String codCia=txtCodAirport.getText();
 
-        btnConsulta1.setOnAction(e -> {
-            //String sentido = rbPartCheg.getToggles();
-            //codCia=txtCodAirport.getText();
-            //consulta1(codCia);
-            consulta1("JJ", "chegada", "BR");
+        leftPane.add(lCodCia, 0, 0);
+        leftPane.add(txtCodCia, 0, 1);
+        txtCodCia.textProperty().addListener((observable, oldValue, newValue)-> {
+            paisOrigem.setItems(gerRotas.listaRota(txtCodCia.getText()));
+            paisOrigem.setOnAction(e->{
+                paisDestino.setItems(gerRotas.listaRota(txtCodCia.getText()));
+                paisDestino.setOnAction(i->{
+                    consulta1(txtCodCia.getText(),
+                            paisOrigem.getSelectionModel().getSelectedItem().toString().substring(0,2),
+                            paisDestino.getSelectionModel().getSelectedItem().toString().substring(0,2));
+                });
+            });
         });
 
+        //leftPane.add(new Label("Origem:"), 0, 3);
+
+
+        leftPane.add(btnConsulta1, 1, 1);
+        leftPane.add(btnConsulta2, 0, 5);
+        leftPane.add(btnConsulta3, 0, 6);
+        leftPane.add(btnConsulta4, 0, 7);
+
+//        ComboBox <Pais> myComboBox = new ComboBox<>();
+//        this.gerRotas.loadPais(txtCodAirport.getText(),rbPartCheg.getSelectedToggle().toString());
+//
+//        myComboBox.setItems(gerRotas.listaRota(txtCodAirport.getText()));
+//
+//        myComboBox.setCellFactory((comboBox)->{
+//            return new ListCell<Pais>(){
+//                @Override
+//                protected void updateItem(Pais item, boolean empty){
+//                    super.updateItem(item, empty);
+//
+//                    if(item == null || empty){
+//                        setText(null);
+//                    }else{
+//                        setText(item.getCodigo() + " - "+item.getNome());
+//                    }
+//                }
+//            };
+//        });
+//
+//        leftPane.add(myComboBox, 1, 3);
+
+
+
+
+        btnConsulta1.setOnAction(e -> {
+            //paisOrigem.setItems(gerRotas.listaRota(txtCodCia.getText()));// = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
+            //paisDestino.setItems(gerRotas.listaRota(txtCodCia.getText()));// = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
+
+            paisOrigem.setOnAction(i->{
+                consulta1(txtCodCia.getText(),
+                        paisOrigem.getSelectionModel().getSelectedItem().toString().substring(0,2),
+                        paisDestino.getSelectionModel().getSelectedItem().toString().substring(0,2));
+                paisDestino.setOnAction(j->{
+                    consulta1(txtCodCia.getText(),
+                            paisOrigem.getSelectionModel().getSelectedItem().toString().substring(0,2),
+                            paisDestino.getSelectionModel().getSelectedItem().toString().substring(0,2));
+                });
+            });
+
+        });
+        leftPane.add(paisOrigem, 0, 3);
+        leftPane.add(paisDestino, 1, 3);
+
         btnConsulta2.setOnAction(e -> {
-            //codCia=txtCodAirport.getText();
-            consulta2(codCia);
+            consulta2(txtCodCia.getText());
+        });
+
+        btnConsulta3.setOnAction(e -> {
+            gerenciador.clear();
+            List<MyWaypoint> lstPoints = new ArrayList<>();
+            gerenciador.setPontos(lstPoints);
         });
 
         btnConsulta4.setOnAction(e -> {
@@ -153,16 +212,15 @@ public class Main extends Application {
         }
     }
 
-    private void consulta1(String codCia, String sentido, String pais){
+    private void consulta1(String codCia, String paisO, String paisD){
 
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
-        List<Rota> lstRota = gerRotas.listaRota(codCia);
-        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
-        // waypoints
-        if(sentido.equalsIgnoreCase("partida")){
+        List<Rota> lstRota = gerRotas.listaRota2(codCia);
+
+        //mostra o traçado de acordo com o pais de partida e chegada
             for(Rota ap:lstRota){
-                if(ap.getOrigem().getPais().getCodigo().equalsIgnoreCase(pais)){
+                if(ap.getOrigem().getPais().getCodigo().equalsIgnoreCase(paisO) && ap.getDestino().getPais().getCodigo().equalsIgnoreCase(paisD)){
                     Tracado tr = new Tracado();
                     tr.setLabel(ap.getOrigem().getCodigo());
                     tr.setWidth(5);
@@ -172,26 +230,11 @@ public class Main extends Application {
                     gerenciador.addTracado(tr);
                 }
             }
+        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
+        // waypoints
             for (Aeroporto airport : gerRotas.airportsByAirlinesFrom(codCia)) {
                 lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
             }
-        }else{
-            for(Rota ap:lstRota){
-                if(ap.getDestino().getPais().getCodigo().equalsIgnoreCase(pais)){
-                    Tracado tr = new Tracado();
-                    tr.setLabel(ap.getOrigem().getCodigo());
-                    tr.setWidth(5);
-                    tr.setCor(new Color(0,0,0,60));
-                    tr.addPonto(ap.getOrigem().getLocal());
-                    tr.addPonto(ap.getDestino().getLocal());
-                    gerenciador.addTracado(tr);
-                }
-            }
-            for (Aeroporto airport : gerRotas.airportsByAirlinesTo(codCia)) {
-                lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
-            }
-        }
-
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
@@ -206,10 +249,38 @@ public class Main extends Application {
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
 
+        HashMap<String, Integer> lstSize = new HashMap<>();
+
+        for(Aeroporto ap: gerRotas.airportsByAirlinesFrom(codCia)){
+            if(lstSize.containsKey(ap.getCodigo())){
+                lstSize.put(ap.getCodigo(), (lstSize.get(ap.getCodigo())+2));
+            }else{
+                lstSize.put(ap.getCodigo(), 2);
+            }
+        }
+
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Aeroporto airport : gerRotas.airportsByAirlinesTo(codCia)) {
-            lstPoints.add(new MyWaypoint(Color.BLUE, airport.getCodigo(), airport.getLocal(), 10));
+        Color x;
+        int cor, aux;
+        for (Aeroporto airport : gerRotas.airportsByAirlinesFrom(codCia)) {
+            if(lstSize.get(airport.getCodigo())<=5){
+                x = Color.CYAN;
+            }else if(lstSize.get(airport.getCodigo())<=10){
+                x = Color.GREEN;
+            }else if(lstSize.get(airport.getCodigo())<=15){
+                x = Color.YELLOW;
+            }else if(lstSize.get(airport.getCodigo())<=20){
+                x = Color.ORANGE;
+            }else if(lstSize.get(airport.getCodigo())<=25){
+                x = Color.RED;
+            }else if(lstSize.get(airport.getCodigo())<=30){
+                x = Color.BLACK;
+            }else{
+                x = Color.BLUE;
+            }
+            //x = new Color(200,100,30,90);
+            lstPoints.add(new MyWaypoint(x, airport.getCodigo(), airport.getLocal(), lstSize.get(airport.getCodigo())));
         }
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
