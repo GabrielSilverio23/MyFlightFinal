@@ -14,8 +14,6 @@ import java.util.stream.Collectors;
 
 public class GerenciadorRotas {
 
-    //private static GerenciadorRotas cbp = new GerenciadorRotas();
-
     private ArrayList<Rota> listaRotas;
     List<Aeroporto> aeroportos = new ArrayList<>();
 
@@ -64,37 +62,6 @@ public class GerenciadorRotas {
         listaRotas.add(p);
     }
 
-    public Rota buscarCia(String codigo) {
-        for(Rota r: listaRotas) {
-            if (codigo.equalsIgnoreCase(r.getCia().getCodigo()))
-                return r;
-        }
-        return null;
-    }
-    public Rota buscarOrigem(String codigo) {
-        for(Rota r: listaRotas) {
-            if (codigo.equalsIgnoreCase(r.getOrigem().getCodigo()))
-                return r;
-        }
-        return null;
-    }
-    public Rota buscarDestino(String codigo) {
-        for(Rota r: listaRotas) {
-            if (codigo.equalsIgnoreCase(r.getDestino().getCodigo()))
-                return r;
-        }
-        return null;
-    }
-    public Rota buscarAeronave(String codigo) {
-        for(Rota r: listaRotas) {
-            if (codigo.equalsIgnoreCase(r.getAeronave().getCodigo()))
-                return r;
-        }
-        return null;
-    }
-
-
-
     public List<Aeroporto> airportsByAirlinesFrom(String cod){
         for(Rota r: listaRotas) {
             if (r.getCia().getCodigo().equalsIgnoreCase(cod))
@@ -133,32 +100,77 @@ public class GerenciadorRotas {
         return lr;
     }
 
+    public List<Rota> escala(String apPartida,String apChegada){
+        List<Rota> lr = new ArrayList<>();
+        for(Rota r: listaRotas){
+            if(r.getOrigem().getCodigo().equalsIgnoreCase(apPartida) || r.getDestino().getCodigo().equalsIgnoreCase(apChegada)){
+                lr.add(r);
+            }
+            for(Rota r2: listaRotas){
+                if(r.getOrigem().getCodigo().equalsIgnoreCase(apPartida) && r.getDestino().getCodigo().equalsIgnoreCase(r2.getOrigem().getCodigo())){
+                    lr.add(r2);
+                    lr.add(r);
+                }else if(r.getDestino().getCodigo().equalsIgnoreCase(apChegada) && r.getOrigem().getCodigo().equalsIgnoreCase(r2.getDestino().getCodigo())){
+                    lr.add(r2);
+                    lr.add(r);
+                }
+            }
+        }
+        return lr;
+    }
+
+    public List<Rota> possiveisRotas(String apPartida, String apChegada){
+        List<Rota> lr = new ArrayList<>();
+        List<Rota> rot = escala(apPartida,apChegada);
+        int i=0;
+        for(Rota r1: rot){
+            if (r1.getOrigem().getCodigo().equalsIgnoreCase(apPartida) && r1.getDestino().getCodigo().equalsIgnoreCase(apChegada)) {
+                lr.add(r1);
+                i++;
+                if(i==20){
+                    return lr;
+                }
+            }
+        }
+        for(Rota r2: rot) {
+            for(Rota aux: rot){
+                if (r2.getOrigem().getCodigo().equalsIgnoreCase(apPartida) && aux.getDestino().getCodigo().equalsIgnoreCase(apChegada) &&
+                        r2.getDestino().getCodigo().equalsIgnoreCase(aux.getOrigem().getCodigo())) {
+                    lr.add(aux);
+                    lr.add(r2);
+                    i++;
+                    if(i==20)
+                        return lr;
+                }
+            }
+        }
+        for(Rota r4: rot) {
+            for(Rota r5: rot) {
+                for (Rota r6 : rot) {
+                    if (r4.getOrigem().getCodigo().equalsIgnoreCase(apPartida) && r4.getDestino().getCodigo().equalsIgnoreCase(r5.getOrigem().getCodigo())) {
+                        if (r5.getDestino().getCodigo().equalsIgnoreCase(r6.getOrigem().getCodigo()) && r6.getDestino().getCodigo().equalsIgnoreCase(apChegada)) {
+                            lr.add(r4);
+                            lr.add(r5);
+                            lr.add(r6);
+                            i++;
+                            if(i==20)
+                                return lr;
+                        }
+                    }
+                }
+            }
+        }
+
+        lr = lr.stream().distinct().collect(Collectors.toList());
+        return lr;
+    }
+
 
     public ArrayList<Rota> listarTodas() {
         return new ArrayList<>(listaRotas);
     }
 
 
-
-    public List<Pais> loadPais(String cod, String sentido){
-        List<Pais> pais = new LinkedList<Pais>();
-
-        if(sentido.equalsIgnoreCase("partida")){
-            for(Rota r: listaRotas) {
-                if (r.getCia().getCodigo().equalsIgnoreCase(cod))
-                    pais.add(r.getOrigem().getPais());
-            }
-            pais = pais.stream().distinct().collect(Collectors.toList());
-            return pais;
-        }else{
-            for(Rota r: listaRotas) {
-                if (r.getCia().getCodigo().equalsIgnoreCase(cod))
-                    pais.add(r.getDestino().getPais());
-            }
-            pais = pais.stream().distinct().collect(Collectors.toList());
-            return pais;
-        }
-    }
 //
 //    private List<String> paises;
 //

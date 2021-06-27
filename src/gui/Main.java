@@ -86,6 +86,8 @@ public class Main extends Application {
         Button btnConsulta2 = new Button("Consulta 2");
         Button btnConsulta3 = new Button("Consulta 3");
         Button btnConsulta4 = new Button("Consulta 4");
+        Button btnConsulta5 = new Button("Consulta 5");
+        Button btnConsulta6 = new Button("Consulta 6");
         TextField txtCodCia = new TextField();
         ComboBox paisOrigem = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
         ComboBox paisDestino = new ComboBox(gerRotas.listaRota(txtCodCia.getText()));
@@ -125,6 +127,8 @@ public class Main extends Application {
         leftPane.add(btnConsulta2, 0, 5);
         leftPane.add(btnConsulta3, 0, 6);
         leftPane.add(btnConsulta4, 0, 7);
+        leftPane.add(btnConsulta5, 0, 8);
+        leftPane.add(btnConsulta6, 0, 9);
 
 //        ComboBox <Pais> myComboBox = new ComboBox<>();
 //        this.gerRotas.loadPais(txtCodAirport.getText(),rbPartCheg.getSelectedToggle().toString());
@@ -182,6 +186,10 @@ public class Main extends Application {
 
         btnConsulta4.setOnAction(e -> {
             consulta4();
+        });
+
+        btnConsulta5.setOnAction(e -> {
+            consulta5("poa", "hnd");
         });
 
         pane.setCenter(mapkit);
@@ -332,6 +340,40 @@ public class Main extends Application {
         // Quando for o caso de limpar os traçados...
         // gerenciador.clear();
 
+        gerenciador.getMapKit().repaint();
+    }
+
+    private void consulta5(String apPartida, String apChegada){
+
+        List<MyWaypoint> lstPoints = new ArrayList<>();
+        gerenciador.clear();
+        List<Rota> lstRota = gerRotas.possiveisRotas(apPartida, apChegada);
+
+        //mostra o traçado de acordo com o pais de partida e chegada
+        for(Rota ap:lstRota){
+            //if(ap.getOrigem().getCodigo().equalsIgnoreCase(apPartida) || ap.getDestino().getCodigo().equalsIgnoreCase(apChegada)){
+                Tracado tr = new Tracado();
+                tr.setLabel(ap.getOrigem().getCodigo());
+                tr.setWidth(5);
+                tr.setCor(new Color(0,0,0,60));
+                tr.addPonto(ap.getOrigem().getLocal());
+                tr.addPonto(ap.getDestino().getLocal());
+                gerenciador.addTracado(tr);
+            //}
+        }
+        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
+        // waypoints
+        for (Rota airport : lstRota) {
+            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
+        }
+
+        // Para obter um ponto clicado no mapa, usar como segue:
+        GeoPosition pos = gerenciador.getPosicao();
+        // Informa o resultado para o gerenciador
+        gerenciador.setPontos(lstPoints);
+        // Quando for o caso de limpar os traçados...
+        //gerenciador.clear();
         gerenciador.getMapKit().repaint();
     }
 
