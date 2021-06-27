@@ -137,18 +137,22 @@ public class App {
 
         System.out.println(airports);
 
-        for(Aeroporto lst: airports1) {
-            System.out.println(lst.getCodigo() + lst.getLocal());
-
-        }
+//        for(Aeroporto lst: airports1) {
+//            System.out.println(lst.getCodigo() + lst.getLocal());
+//
+//        }
 
         Aeroporto x = gerAero.buscarCodigo("ACK");
         System.out.println(x);
 
         List<Aeroporto> t1 = gerRotas.airportsByAirlinesFrom("5Q");
 
-        for(Aeroporto lst: t1) {
-            System.out.println(lst.getCodigo() + lst.getLocal());
+        List<Rota> lisr =  gerRotas.listaRota("5Q");
+
+
+
+        for(Rota lst: lisr) {
+            System.out.println("Partida: "+lst.getOrigem().getCodigo() +" - " +lst.getOrigem().getPais().getCodigo() + "| Chegada: " + lst.getDestino().getCodigo()+" - " +lst.getDestino().getPais().getCodigo());
         }
 
 /*

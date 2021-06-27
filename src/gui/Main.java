@@ -10,10 +10,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.jxmapviewer.JXMapViewer;
 import org.jxmapviewer.viewer.GeoPosition;
@@ -21,7 +24,7 @@ import modelo.*;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.TextField;
+import java.awt.TextArea;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.BufferedReader;
@@ -30,9 +33,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
+import java.util.*;
 import java.util.List;
 
 public class Main extends Application {
@@ -72,22 +73,52 @@ public class Main extends Application {
         leftPane.setVgap(10);
         leftPane.setPadding(new Insets(10, 10, 10, 10));
 
-        Button btnConsulta1 = new Button("Consulta 1");
-        Button btnConsulta2 = new Button("Consulta 2");
+        //Text tfTitulo = new Text("Informe o código da Cia. Aerea:");
+        Label lCodAirport = new Label("Cia. Aerea:");
+
+        //ComboBox cbIda = new ComboBox("Origem");
+
+        //ComboBox cbVolta = new ComboBox(gerRotas.airportsByAirlinesTo(codAirport));
+        //String codCia;
+        Button btnConsulta1 = new Button("Origem");
+        Button btnConsulta2 = new Button("Destino");
         Button btnConsulta3 = new Button("Consulta 3");
         Button btnConsulta4 = new Button("Consulta 4");
+        TextField txtCodAirport = new TextField();
+        ComboBox pais;
+        String codp;
 
-        leftPane.add(btnConsulta1, 0, 0);
-        leftPane.add(btnConsulta2, 2, 0);
-        leftPane.add(btnConsulta3, 3, 0);
-        leftPane.add(btnConsulta4, 4, 0);
+        ToggleGroup rbPartCheg = new ToggleGroup();
+        RadioButton rbPartida = new RadioButton("Partida");
+        rbPartida.setToggleGroup(rbPartCheg);
+        RadioButton rbChegada = new RadioButton("Chegada");
+        rbChegada.setToggleGroup(rbPartCheg);
+        rbPartida.setSelected(true);
+        leftPane.add(rbPartida,0,2);
+        leftPane.add(rbChegada,1,2);
+
+        pais = new ComboBox(gerRotas.getPais());
+
+        leftPane.add(lCodAirport, 0, 0);
+        leftPane.add(txtCodAirport, 0, 1);
+        leftPane.add(new Label("Origem:"), 0, 3);
+        leftPane.add(pais, 1, 3);
+        leftPane.add(btnConsulta1, 0, 4);
+        leftPane.add(btnConsulta2, 1, 5);
+        leftPane.add(btnConsulta3, 0, 6);
+        leftPane.add(btnConsulta4, 0, 7);
+        String codCia=txtCodAirport.getText();
 
         btnConsulta1.setOnAction(e -> {
-            consulta1("5Q");
+            //String sentido = rbPartCheg.getToggles();
+            //codCia=txtCodAirport.getText();
+            //consulta1(codCia);
+            consulta1("JJ", "chegada", "BR");
         });
 
         btnConsulta2.setOnAction(e -> {
-            consulta2("5Q");
+            //codCia=txtCodAirport.getText();
+            consulta2(codCia);
         });
 
         btnConsulta4.setOnAction(e -> {
@@ -122,14 +153,46 @@ public class Main extends Application {
         }
     }
 
-    private void consulta1(String cod){
+    private void consulta1(String codCia, String sentido, String pais){
+
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
+        List<Rota> lstRota = gerRotas.listaRota(codCia);
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Aeroporto airport : gerRotas.airportsByAirlinesFrom(cod)) {
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
+        if(sentido.equalsIgnoreCase("partida")){
+            for(Rota ap:lstRota){
+                if(ap.getOrigem().getPais().getCodigo().equalsIgnoreCase(pais)){
+                    Tracado tr = new Tracado();
+                    tr.setLabel(ap.getOrigem().getCodigo());
+                    tr.setWidth(5);
+                    tr.setCor(new Color(0,0,0,60));
+                    tr.addPonto(ap.getOrigem().getLocal());
+                    tr.addPonto(ap.getDestino().getLocal());
+                    gerenciador.addTracado(tr);
+                }
+            }
+            for (Aeroporto airport : gerRotas.airportsByAirlinesFrom(codCia)) {
+                lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
+            }
+        }else{
+            for(Rota ap:lstRota){
+                if(ap.getDestino().getPais().getCodigo().equalsIgnoreCase(pais)){
+                    Tracado tr = new Tracado();
+                    tr.setLabel(ap.getOrigem().getCodigo());
+                    tr.setWidth(5);
+                    tr.setCor(new Color(0,0,0,60));
+                    tr.addPonto(ap.getOrigem().getLocal());
+                    tr.addPonto(ap.getDestino().getLocal());
+                    gerenciador.addTracado(tr);
+                }
+            }
+            for (Aeroporto airport : gerRotas.airportsByAirlinesTo(codCia)) {
+                lstPoints.add(new MyWaypoint(Color.RED, airport.getCodigo(), airport.getLocal(), 10));
+            }
         }
+
+
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
         // Informa o resultado para o gerenciador
@@ -139,12 +202,13 @@ public class Main extends Application {
         gerenciador.getMapKit().repaint();
     }
 
-    private void consulta2(String cod){
+    private void consulta2(String codCia){
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
+
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Aeroporto airport : gerRotas.airportsByAirlinesTo(cod)) {
+        for (Aeroporto airport : gerRotas.airportsByAirlinesTo(codCia)) {
             lstPoints.add(new MyWaypoint(Color.BLUE, airport.getCodigo(), airport.getLocal(), 10));
         }
         // Para obter um ponto clicado no mapa, usar como segue:

@@ -37,6 +37,7 @@ public class GerenciadorAeroportos {
                 String nome = dados[3];
                 String pais = dados[4];
                 GerenciadorPais gp = GerenciadorPais.getInstance();
+                gp.carregaDados("countries.dat");
                 Aeroporto novo = new Aeroporto(cod, nome, new Geo(lat, lon), gp.buscarCodigo(pais));
                 inserir(novo);
                 //System.out.format("%s - %s (%s)%n", nome, data, cpf);
