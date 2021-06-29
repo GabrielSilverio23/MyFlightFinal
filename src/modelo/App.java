@@ -151,9 +151,17 @@ public class App {
 
 
 
-        for(Rota lst: lisr) {
-            System.out.println("Partida: "+lst.getOrigem().getCodigo() +" - " +lst.getOrigem().getPais().getCodigo() + "| Chegada: " + lst.getDestino().getCodigo()+" - " +lst.getDestino().getPais().getCodigo());
+//        for(Rota lst: lisr) {
+//            System.out.println("Partida: "+lst.getOrigem().getCodigo() +" - " +lst.getOrigem().getPais().getCodigo() + "| Chegada: " + lst.getDestino().getCodigo()+" - " +lst.getDestino().getPais().getCodigo());
+//        }
+
+        List<RotaEscala> test = gerRotas.possiveisRotas(gerAero.buscarCodigo("POA"), gerAero.buscarCodigo("mia"));
+        int i=0;
+        for(RotaEscala r: test){
+            System.out.println(i+" - "+r+" / "+r.getRotas());
+            i++;
         }
+
 
 /*
         Rota poagru = new Rota(latam, poa, gru, b733);

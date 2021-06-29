@@ -175,7 +175,8 @@ public class Main extends Application {
         leftPane.add(paisDestino, 1, 3);
 
         btnConsulta2.setOnAction(e -> {
-            consulta2(txtCodCia.getText());
+            //consulta2(txtCodCia.getText());
+            consulta2("ek");
         });
 
         btnConsulta3.setOnAction(e -> {
@@ -261,9 +262,9 @@ public class Main extends Application {
 
         for(Aeroporto ap: gerRotas.airportsByAirlinesFrom(codCia)){
             if(lstSize.containsKey(ap.getCodigo())){
-                lstSize.put(ap.getCodigo(), (lstSize.get(ap.getCodigo())+2));
+                lstSize.put(ap.getCodigo(), (lstSize.get(ap.getCodigo())+5));
             }else{
-                lstSize.put(ap.getCodigo(), 2);
+                lstSize.put(ap.getCodigo(), 5);
             }
         }
 
@@ -276,15 +277,16 @@ public class Main extends Application {
                 x = Color.CYAN;
             }else if(lstSize.get(airport.getCodigo())<=10){
                 x = Color.GREEN;
-            }else if(lstSize.get(airport.getCodigo())<=15){
-                x = Color.YELLOW;
             }else if(lstSize.get(airport.getCodigo())<=20){
-                x = Color.ORANGE;
-            }else if(lstSize.get(airport.getCodigo())<=25){
-                x = Color.RED;
+                x = Color.YELLOW;
             }else if(lstSize.get(airport.getCodigo())<=30){
+                x = Color.ORANGE;
+            }else if(lstSize.get(airport.getCodigo())<=40){
+                x = Color.RED;
+            }else if(lstSize.get(airport.getCodigo())<=50){
                 x = Color.BLACK;
             }else{
+                lstSize.put(airport.getCodigo(), 70);
                 x = Color.BLUE;
             }
             //x = new Color(200,100,30,90);
@@ -347,19 +349,30 @@ public class Main extends Application {
 
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
-        List<Rota> lstRota = gerRotas.possiveisRotas(apPartida, apChegada);
+        List<RotaEscala> lstRota = gerRotas.possiveisRotas(gerAero.buscarCodigo(apPartida),gerAero.buscarCodigo(apChegada));
+                //lstRota.add(gerRotas.possivelRotaSemEscala(gerAero.buscarCodigo(apPartida),gerAero.buscarCodigo(apChegada)));//new ArrayList<>();//gerRotas.possivelRotaSemEscala(apPartida, apChegada);
 
+
+        //lstRota.add(gerRotas.possivelRotaSemEscala(apPartida,apChegada));
+        //lstRota.add(gerRotas.possivelRotaComEscala1(apPartida,apChegada));
         //mostra o traçado de acordo com o pais de partida e chegada
-        for(Rota ap:lstRota){
-            //if(ap.getOrigem().getCodigo().equalsIgnoreCase(apPartida) || ap.getDestino().getCodigo().equalsIgnoreCase(apChegada)){
+        for(RotaEscala ap:lstRota){
+            for(Rota ap1:ap.getRotas()) {
                 Tracado tr = new Tracado();
-                tr.setLabel(ap.getOrigem().getCodigo());
+                tr.setLabel(ap1.getOrigem().getCodigo());
                 tr.setWidth(5);
-                tr.setCor(new Color(0,0,0,60));
-                tr.addPonto(ap.getOrigem().getLocal());
-                tr.addPonto(ap.getDestino().getLocal());
+                tr.setCor(new Color(0, 0, 0, 60));
+                tr.addPonto(ap1.getOrigem().getLocal());
+                tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
-            //}
+                Tracado tr2 = new Tracado();
+                tr2.setLabel(ap.getOrigem().getCodigo());
+                tr2.setWidth(5);
+                tr2.setCor(new Color(0, 0, 0, 60));
+                tr2.addPonto(ap.getOrigem().getLocal());
+                tr2.addPonto(ap.getDestino().getLocal());
+                gerenciador.addTracado(tr2);
+            }
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints

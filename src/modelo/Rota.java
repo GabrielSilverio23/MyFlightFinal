@@ -29,6 +29,20 @@ public class Rota implements Comparable<Rota> {
         return aeronave;
     }
 
+    public double calcDistancia(){
+        return Geo.distancia(origem.getLocal(), destino.getLocal());
+    }
+
+    public double getDuracao(){
+
+        double distancia = calcDistancia();
+
+        double velocidade = 805.1;
+
+        double duracaoH = 0.5+distancia*1.0/velocidade;
+        return duracaoH;
+    }
+
     @Override
     public String toString() {
         return cia.getCodigo() + " - " + origem.getCodigo() + " -> " + destino.getCodigo()
