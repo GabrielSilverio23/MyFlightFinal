@@ -1,3 +1,5 @@
+//Gabriel Silverio - 20106468
+
 package modelo;
 
 import java.io.BufferedReader;
@@ -23,7 +25,6 @@ public class GerenciadorAeronaves {
             instance = new GerenciadorAeronaves();
         return instance;
     }
-
     public void carregaDados(String nomeArq) throws IOException {
         Path path = Paths.get(nomeArq);
         try (BufferedReader reader = Files.newBufferedReader(path, Charset.forName("utf8"))) {
@@ -57,10 +58,6 @@ public class GerenciadorAeronaves {
         return new ArrayList<>(listaAviao);
     }
 
-    public void ordenarCodigo() {
-        listaAviao.sort( (Aeronave a1, Aeronave a2) ->
-                a1.getCodigo().compareTo(a2.getCodigo()));
-    }
 
     public void ordenarCodigoDescricao() {
         // Ordenando pelo código e desempatando pela descrição

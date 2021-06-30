@@ -1,8 +1,7 @@
+//Gabriel Silverio - 20106468
+
 package modelo;
 
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -15,45 +14,6 @@ import java.util.stream.Collectors;
 
 public class GerenciadorPais {
 
-    /*private Map<String, Pais> pais;
-
-    public GerenciadorPais() {
-//        this.empresas = new HashMap<>();
-//        this.empresas = new TreeMap<>();
-        this.pais = new LinkedHashMap<>();
-    }
-
-    public ArrayList<Pais> listarTodas() {
-        return new ArrayList<>(pais.values());
-    }
-
-    public void carregaDados(String nomeArq) throws IOException {
-        Path path = Paths.get(nomeArq);
-        try (Scanner sc = new Scanner(Files.newBufferedReader(path, Charset.forName("utf8")))) {
-            sc.useDelimiter("[;\n]"); // separadores: ; e nova linha
-            String header = sc.nextLine(); // pula cabeçalho
-            String cod, nome;
-            while (sc.hasNext()) {
-                cod = sc.next();
-                nome = sc.next();
-                Pais nova = new Pais(cod, nome);
-                adicionar(nova);
-                //System.out.format("%s - %s (%s)%n", nome, data, cpf);
-            }
-        }
-    }
-
-    public void adicionar(Pais pais1) {
-        pais.put(pais1.getCodigo(),pais1);
-    }
-
-    public Pais buscarCodigo(String cod) {
-        for(Pais p: pais.values())
-            if(p.getCodigo().equals(cod))
-                return p;
-        return null;
-        //return pais.get(cod);
-    }*/
     private ArrayList<Pais> listaPais;
 
     private GerenciadorPais(){
