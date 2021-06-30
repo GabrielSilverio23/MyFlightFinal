@@ -5,7 +5,6 @@ import java.util.List;
 
 public class RotaEscala extends Rota implements Comparable<Rota>{
     private List<Rota> rotas;
-    //private Rota rota;
 
     public RotaEscala(Rota rota){
         super(rota.getCia(), rota.getOrigem(), rota.getDestino(), rota.getAeronave());
@@ -16,9 +15,6 @@ public class RotaEscala extends Rota implements Comparable<Rota>{
         rotas.add(escala);
     }
 
-    //public Rota getRota(){
-    //    return rota;
-    //}
 
     public List<Rota> getRotas(){
         return rotas;
@@ -52,16 +48,23 @@ public class RotaEscala extends Rota implements Comparable<Rota>{
         return duracaoT;
     }
 
+    public int getNumeroRota(){
+        int i=0;
+
+        for(Rota escala: rotas){
+            i++;
+        }
+        return i;
+    }
+
     @Override
     public String toString() {
         String rotaStr = "";
         for(Rota escala: rotas)
-            rotaStr+= String.format("\t%s \tDuração: %.2f horas\n",
-                    escala,
-                    escala.getDuracao());
+            rotaStr+= String.format("%s\n",
+                    escala);
 
-        return String.format("\n %s \n %s\n Duração Total: %.2f",
+        return String.format(" %s \n %s\n Duração Total: %.2f",
                 super.toString(), rotaStr, getDuracao());
     }
-
 }

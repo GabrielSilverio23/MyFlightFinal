@@ -77,8 +77,8 @@ public class App {
             System.out.println("Não foi possível ler airports.dat!");
 //            System.exit(1);
         }
-        ArrayList<Aeroporto> todosAeroportos = gerAero.listarTodas();
-        System.out.println("Total aeroportos:"+todosAeroportos.size());
+//        ArrayList<Aeroporto> todosAeroportos = gerAero.listarTodas();
+//        System.out.println("Total aeroportos:"+todosAeroportos.size());
 //        for(Aeroporto ap: todosAeroportos)
 //            System.out.println(ap.getCodigo()+" - "+ap.getNome()+" - "+ap.getLocal()+" - "+ap.getPais().getCodigo());
 
@@ -95,7 +95,7 @@ public class App {
 //            System.exit(1);
         }
         ArrayList<Rota> todasRotas = gerRotas.listarTodas();
-        System.out.println("Total rotas:"+todasRotas.size());
+//        System.out.println("Total rotas:"+todasRotas.size());
 //        for(Rota rt: todasRotas)
 //            System.out.println(rt.getCia().getCodigo()+" - "+rt.getOrigem().getCodigo()+" - "+rt.getDestino().getCodigo()+" - "+rt.getAeronave().getCodigo());
 
@@ -106,8 +106,8 @@ public class App {
 //        }
 
         //List<MyWaypoint> lstAirport = new ArrayList<>();
-        List<Aeroporto> airports1 = gerRotas.airportsByAirlinesFrom("5Q");
-        List<Aeroporto> airports = new ArrayList<>();
+//        List<Aeroporto> airports1 = gerRotas.airportsByAirlinesFrom("5Q");
+//        List<Aeroporto> airports = new ArrayList<>();
         //System.out.println(airports);
 //        for(Aeroporto lst: airports) {
 //            lstPoints.add(lst);
@@ -118,36 +118,35 @@ public class App {
 
 
         GerenciadorPais gerPais = GerenciadorPais.getInstance();
-        List<MyWaypoint> lstPoints = new ArrayList<>();
+//
+//        Aeroporto poa = new Aeroporto("POA", "Salgado Filho", new Geo(-29.9939, -51.1711), gerPais.buscarCodigo("BR"));
+////        Aeroporto poa = new Aeroporto(gerAero.buscarCodigo("POA"));
+//        Aeroporto gru = new Aeroporto("GRU", "Guarulhos", new Geo(-23.4356, -46.4731), gerPais.buscarCodigo("BR"));
+////        Aeroporto gru = new Aeroporto(gerAero.buscarCodigo("GRU"));
+//        Aeroporto lis = new Aeroporto("LIS", "Lisbon", new Geo(38.772,-9.1342), gerPais.buscarCodigo("PT"));
+////        Aeroporto lis = new Aeroporto(gerAero.buscarCodigo("LIS"));
+//        Aeroporto mia = new Aeroporto("MIA", "Miami International", new Geo(25.7933, -80.2906), gerPais.buscarCodigo("US"));
+////        Aeroporto mia = new Aeroporto(gerAero.buscarCodigo("MIA"));
+//        airports.add(gerAero.buscarCodigo("POA"));
+//        airports.add(gru);
+//        airports.add(lis);
+//        airports.add(mia);
+//        airports.add(gerAero.buscarCodigo("AAC"));
+//        airports.add(gerAero.buscarCodigo("ACK"));
 
-        Aeroporto poa = new Aeroporto("POA", "Salgado Filho", new Geo(-29.9939, -51.1711), gerPais.buscarCodigo("BR"));
-//        Aeroporto poa = new Aeroporto(gerAero.buscarCodigo("POA"));
-        Aeroporto gru = new Aeroporto("GRU", "Guarulhos", new Geo(-23.4356, -46.4731), gerPais.buscarCodigo("BR"));
-//        Aeroporto gru = new Aeroporto(gerAero.buscarCodigo("GRU"));
-        Aeroporto lis = new Aeroporto("LIS", "Lisbon", new Geo(38.772,-9.1342), gerPais.buscarCodigo("PT"));
-//        Aeroporto lis = new Aeroporto(gerAero.buscarCodigo("LIS"));
-        Aeroporto mia = new Aeroporto("MIA", "Miami International", new Geo(25.7933, -80.2906), gerPais.buscarCodigo("US"));
-//        Aeroporto mia = new Aeroporto(gerAero.buscarCodigo("MIA"));
-        airports.add(gerAero.buscarCodigo("POA"));
-        airports.add(gru);
-        airports.add(lis);
-        airports.add(mia);
-        airports.add(gerAero.buscarCodigo("AAC"));
-        airports.add(gerAero.buscarCodigo("ACK"));
-
-        System.out.println(airports);
+//        System.out.println(airports);
 
 //        for(Aeroporto lst: airports1) {
 //            System.out.println(lst.getCodigo() + lst.getLocal());
 //
 //        }
 
-        Aeroporto x = gerAero.buscarCodigo("ACK");
-        System.out.println(x);
+//        Aeroporto x = gerAero.buscarCodigo("ACK");
+        //System.out.println(x);
 
-        List<Aeroporto> t1 = gerRotas.airportsByAirlinesFrom("5Q");
+//        List<Aeroporto> t1 = gerRotas.airportsByAirlinesFrom("5Q");
 
-        List<Rota> lisr =  gerRotas.listaRota("5Q");
+        //List<Rota> lisr =  gerRotas.listaRota("5Q");
 
 
 
@@ -155,13 +154,21 @@ public class App {
 //            System.out.println("Partida: "+lst.getOrigem().getCodigo() +" - " +lst.getOrigem().getPais().getCodigo() + "| Chegada: " + lst.getDestino().getCodigo()+" - " +lst.getDestino().getPais().getCodigo());
 //        }
 
-        List<RotaEscala> test = gerRotas.possiveisRotas(gerAero.buscarCodigo("POA"), gerAero.buscarCodigo("mia"));
+//        List<RotaEscala> test = gerRotas.possiveisRotas(gerAero.buscarCodigo("POA"), gerAero.buscarCodigo("mia"));
+//        int i=0;
+//        for(RotaEscala r: test){
+//            System.out.println(i+" - "+r+" / "+r.getRotas());
+//            i++;
+//        }
         int i=0;
-        for(RotaEscala r: test){
-            System.out.println(i+" - "+r+" / "+r.getRotas());
-            i++;
-        }
+        System.out.println("Aeroportos a partie de POA:");
+        for(RotaEscala re: gerRotas.possiveisRotas(gerAero.buscarCodigo("POA"), gerAero.buscarCodigo("gru"))){
+            //for(Rota r: re.getRotas()){
+                System.out.println(i+" - "+re);
+                i++;
+            //}
 
+        }
 
 /*
         Rota poagru = new Rota(latam, poa, gru, b733);

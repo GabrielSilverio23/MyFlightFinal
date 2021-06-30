@@ -248,7 +248,7 @@ public class GerenciadorMapa {
         Set<MyWaypoint> pontos = new HashSet<MyWaypoint>(lista);
         // Informando o conjunto ao painter
         pontosPainter.setWaypoints(pontos);
-        pontos.clear();
+
     }
 
     /*

@@ -45,8 +45,11 @@ public class Rota implements Comparable<Rota> {
 
     @Override
     public String toString() {
-        return cia.getCodigo() + " - " + origem.getCodigo() + " -> " + destino.getCodigo()
-                + " ("  + aeronave.getCodigo() + ")";
+        return String.format("%s - %s -> %s",
+                cia.getCodigo(),
+                origem.getCodigo(),
+                destino.getCodigo());
+                //aeronave.getCodigo());
     }
 
     @Override
