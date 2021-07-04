@@ -113,7 +113,6 @@ public class GerenciadorRotas {
         for(Aeroporto ap: dicAeroporto.get(apPartida)){
             if(dicAeroporto.get(ap).contains(apChegada)){
                 RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
-                //r.addRota(r);
                 r.addRota(buscaRota(ap, apChegada));
                 listaEscala.add(r);
             }
@@ -121,7 +120,7 @@ public class GerenciadorRotas {
 
         for(Aeroporto ap: dicAeroporto.get(apPartida)){
             for(Aeroporto ap1: dicAeroporto.get(ap)) {
-                if (dicAeroporto.get(ap1).contains(apChegada) && ap1!=apPartida && ap!=apChegada ) {
+                if (dicAeroporto.get(ap1).contains(apChegada) && ap1!=apPartida && ap!=apChegada) {
                     RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
                     r.addRota(buscaRota(ap, ap1));
                     r.addRota(buscaRota(ap1, apChegada));
@@ -285,10 +284,20 @@ public class GerenciadorRotas {
         return FXCollections.observableList(lr);
     }
     //observableList usado para puxar dados para o comboBox no main
-    public ObservableList listaRotaF(String apPartida, String apChegada){
+    public ObservableList cbListaRota(String apPartida, String apChegada){
         GerenciadorAeroportos gerAp = GerenciadorAeroportos.getInstance();
         List<RotaEscala> lr = possiveisRotas(gerAp.buscarCodigo(apPartida), gerAp.buscarCodigo(apChegada));
-        lr = lr.stream().sorted().distinct().collect(Collectors.toList());
+        Collections.sort(lr, new Comparator<RotaEscala>() {
+            @Override
+            public int compare(RotaEscala um, RotaEscala outro){
+                int comp = um.getNumeroRota() - outro.getNumeroRota();
+                if(comp == 0){
+                    comp = Double.compare(um.getDuracao(), outro.getDuracao());
+                }
+                return comp;
+            }
+        });
+        lr = lr.stream().distinct().collect(Collectors.toList());
         return FXCollections.observableList(lr);
     }
     public ObservableList listaRotaEscala(String apPartida, String apEscala, String apChegada){

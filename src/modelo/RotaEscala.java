@@ -12,50 +12,36 @@ public class RotaEscala extends Rota implements Comparable<Rota>{
         super(rota.getCia(), rota.getOrigem(), rota.getDestino(), rota.getAeronave());
         rotas = new ArrayList<Rota>();
     }
+    public RotaEscala(CiaAerea cia, Aeroporto ori, Aeroporto dest, Aeronave nav){
+        super(cia, ori, dest, nav);
+        rotas = new ArrayList<Rota>();
+    }
 
     public void addRota(Rota escala){
         rotas.add(escala);
     }
 
-
     public List<Rota> getRotas(){
         return rotas;
     }
 
-    public boolean verificaRotasDuplas(Aeroporto ap){
-        int i=0;
-        for(Rota r: rotas){
-            if(r.getDestino() == ap){
-                i++;
-                if(i>=2){
-                    return false;
-                }
-            }else if(r.getOrigem() == ap){
-                i++;
-                if(i>=2){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+    public double getDuracao() {
+        double distancia = calcDistancia();
 
-    public double getDuracao(){
-        double duracaoT = 0;
-        for(Rota escala: rotas){
-            duracaoT = duracaoT + escala.getDuracao();
-        }
+        double velocidade = 805.1;
 
-        duracaoT=duracaoT+rotas.size()*0.5;
-        return duracaoT;
+        double duracaoH = 0.5+distancia*1.0/velocidade;
+        for (Rota escala : rotas) {
+            duracaoH += escala.getDuracao();
+        }
+        duracaoH += rotas.size() * 0.5;
+        return duracaoH;
     }
 
     public int getNumeroRota(){
         int i=0;
-
-        for(Rota escala: rotas){
+        for(Rota escala: rotas)
             i++;
-        }
         return i;
     }
 

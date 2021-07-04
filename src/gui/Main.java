@@ -112,6 +112,7 @@ public class Main extends Application {
         ComboBox cbNumRotas2;
         ComboBox cbPaisOrigem = new ComboBox(gerRotas.cbPais(txtCodCia.getText()));
         ComboBox cbPaisDestino = new ComboBox(gerRotas.cbPais(txtCodCia.getText()));
+        ComboBox cbAp = new ComboBox();
 
 
 
@@ -142,9 +143,6 @@ public class Main extends Application {
         leftPane.add(lItem2, 0, 4);
         leftPane.add(lCodCia2, 0, 5);
         leftPane.add(txtCodCia2, 1, 5);
-//        txtCodCia2.textProperty().addListener((observable, oldValue, newValue)-> {
-//            item2(newValue);
-//        });
         leftPane.add(btnBuscar2, 0, 6);
 
         //Item 3
@@ -161,7 +159,7 @@ public class Main extends Application {
         TextField txtCodApp2 = new TextField();
         TextField txtCodApc2 = new TextField();
         Label lCodApp2 = new Label("Partida: ");
-        Label lCodApc2 = new Label("Partida: ");
+        Label lCodApc2 = new Label("Chegada: ");
         //Item 4
         leftPane.add(lItem4, 0, 14);
         leftPane.add(lCodApp2, 0, 15);
@@ -185,13 +183,25 @@ public class Main extends Application {
         leftPane.add(txtHora, 1, 23);
         leftPane.add(btnBuscar5, 0, 24);
 
+        //Item 6
+        Label lCidade = new Label("Cidade: ");
+        TextField txtCidade = new TextField();
+        Button btnAdicionarCdd = new Button("Adicionar destino");
+        Button btnBuscar6 = new Button("Gerar rota");
+        leftPane.add(lItem6, 0, 26);
+        leftPane.add(lCidade, 0, 27);
+        leftPane.add(txtCidade, 1, 27);
+        leftPane.add(btnAdicionarCdd, 0, 28);
+        leftPane.add(cbAp, 1, 28);
+        leftPane.add(btnBuscar6, 0, 29);
+
         //Mostra um "mapa de calor" dos aeroportos mais acessados pela CiaAerea X.
         btnBuscar2.setOnAction(e -> {
             item2(txtCodCia2.getText());
         });
 
         btnBuscar3.setOnAction(e -> {
-            cbNumRotas.setItems(gerRotas.listaRotaF(txtCodApp.getText(), txtCodApc.getText()));
+            cbNumRotas.setItems(gerRotas.cbListaRota(txtCodApp.getText(), txtCodApc.getText()));
             cbNumRotas.setOnAction(i -> {
                 RotaEscala rotaSelected = (RotaEscala) cbNumRotas.getSelectionModel().getSelectedItem();
                 destacaRota(rotaSelected);
@@ -357,6 +367,8 @@ public class Main extends Application {
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
+                lstPoints.add(new MyWaypoint(Color.RED, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.RED, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
             tr2.setLabel(ap.getOrigem().getCodigo());
             tr2.setWidth(5);
@@ -364,13 +376,15 @@ public class Main extends Application {
             tr2.addPonto(ap.getOrigem().getLocal());
             tr2.addPonto(ap.getDestino().getLocal());
             gerenciador.addTracado(tr2);
+            lstPoints.add(new MyWaypoint(Color.RED, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.RED, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Rota airport : lstRota) {
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
-        }
+//        for (Rota airport : lstRota) {
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
+//        }
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
@@ -401,12 +415,14 @@ public class Main extends Application {
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
+                lstPoints.add(new MyWaypoint(Color.CYAN, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.CYAN, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
 
-        for(Rota ap2: rota.getRotas()) {
-            lstPoints.add(new MyWaypoint(Color.CYAN, ap2.getOrigem().getCodigo(), ap2.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.CYAN, ap2.getDestino().getCodigo(), ap2.getDestino().getLocal(), 10));
-        }
+//        for(Rota ap2: rota.getRotas()) {
+//            lstPoints.add(new MyWaypoint(Color.CYAN, ap2.getOrigem().getCodigo(), ap2.getOrigem().getLocal(), 10));
+//            lstPoints.add(new MyWaypoint(Color.CYAN, ap2.getDestino().getCodigo(), ap2.getDestino().getLocal(), 10));
+//        }
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
@@ -426,7 +442,6 @@ public class Main extends Application {
             if(ap.getNumeroRota()==a) {
                 Tracado tr2 = new Tracado();
                 for (Rota ap1 : ap.getRotas()) {
-
                     Tracado tr = new Tracado();
                     tr.setLabel(ap1.getOrigem().getCodigo());
                     tr.setWidth(5);
@@ -434,6 +449,8 @@ public class Main extends Application {
                     tr.addPonto(ap1.getOrigem().getLocal());
                     tr.addPonto(ap1.getDestino().getLocal());
                     gerenciador.addTracado(tr);
+                    lstPoints.add(new MyWaypoint(Color.RED, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                    lstPoints.add(new MyWaypoint(Color.RED, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
                 }
                 tr2.setLabel(ap.getOrigem().getCodigo());
                 tr2.setWidth(5);
@@ -441,6 +458,8 @@ public class Main extends Application {
                 tr2.addPonto(ap.getOrigem().getLocal());
                 tr2.addPonto(ap.getDestino().getLocal());
                 gerenciador.addTracado(tr2);
+                lstPoints.add(new MyWaypoint(Color.RED, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.RED, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
             }
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
@@ -575,6 +594,22 @@ public class Main extends Application {
             }
 
         }
+
+        // Para obter um ponto clicado no mapa, usar como segue:
+        GeoPosition pos = gerenciador.getPosicao();
+        // Informa o resultado para o gerenciador
+        gerenciador.setPontos(lstPoints);
+        // Quando for o caso de limpar os traçados...
+        //gerenciador.clear();
+        gerenciador.getMapKit().repaint();
+    }
+
+    private void item6(String apPartida, Double hora){
+        List<MyWaypoint> lstPoints = new ArrayList<>();
+        gerenciador.clear();
+        List<RotaEscala> lstRota = gerRotas.possiveisDestino(gerAero.buscarCodigo(apPartida),hora);
+
+
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();

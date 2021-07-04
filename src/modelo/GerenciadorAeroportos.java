@@ -2,6 +2,9 @@
 
 package modelo;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -9,6 +12,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GerenciadorAeroportos {
 
@@ -81,7 +85,16 @@ public class GerenciadorAeroportos {
         return null;
     }
 
-
+    public ObservableList listaAeroporto(String aeroporto){
+        List<Aeroporto> lap = new ArrayList<>();
+        for(Aeroporto ap: listaAeroporto){
+            if(aeroporto.equalsIgnoreCase(ap.getCodigo())){
+                lap.add(ap);
+            }
+        }
+        lap = lap.stream().sorted().distinct().collect(Collectors.toList());
+        return FXCollections.observableList(lap);
+    }
 
     public ArrayList<Aeroporto> listarTodas() {
         return new ArrayList<>(listaAeroporto);
