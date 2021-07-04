@@ -262,7 +262,7 @@ public class GerenciadorRotas {
         return listaEscala;
     }
     //retorna uma lista de rota
-    public List<Rota> listaRota2(String cod){
+    public List<Rota> tracadoRota(String cod){
         List<Rota> lr = new ArrayList<>();
         for(Rota r: listaRotas) {
             if (r.getCia().getCodigo().equalsIgnoreCase(cod))
@@ -274,21 +274,21 @@ public class GerenciadorRotas {
     public ArrayList<Rota> listarTodas() {
         return new ArrayList<>(listaRotas);
     }
-    //observableList usado para puxar dados para o comboBox no main
-    public ObservableList listaRota(String cod){
+    //envia os paises para o comboBox na main
+    public ObservableList cbPais(String cod){
         List<Pais> lr = new ArrayList<>();
         for(Rota r: listaRotas) {
             if (r.getCia().getCodigo().equalsIgnoreCase(cod))
                 lr.add(r.getOrigem().getPais());
         }
-        lr = lr.stream().distinct().collect(Collectors.toList());
+        lr = lr.stream().sorted().distinct().collect(Collectors.toList());
         return FXCollections.observableList(lr);
     }
     //observableList usado para puxar dados para o comboBox no main
     public ObservableList listaRotaF(String apPartida, String apChegada){
         GerenciadorAeroportos gerAp = GerenciadorAeroportos.getInstance();
         List<RotaEscala> lr = possiveisRotas(gerAp.buscarCodigo(apPartida), gerAp.buscarCodigo(apChegada));
-        lr = lr.stream().distinct().collect(Collectors.toList());
+        lr = lr.stream().sorted().distinct().collect(Collectors.toList());
         return FXCollections.observableList(lr);
     }
     public ObservableList listaRotaEscala(String apPartida, String apEscala, String apChegada){
