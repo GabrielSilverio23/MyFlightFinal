@@ -86,7 +86,7 @@ public class GerenciadorRotas {
         return null;
     }
     //Cria o dicionario de aeroporto, que será usado para manipular as rotas;
-    public HashMap<Aeroporto, HashSet<Aeroporto>> criaDicAp(){
+    public void/*HashMap<Aeroporto, HashSet<Aeroporto>>*/ criaDicAp(){
         for(Rota r:listaRotas) {
             if (dicAeroporto.containsKey(r.getOrigem())) {
                 HashSet<Aeroporto> aux = dicAeroporto.get(r.getOrigem());
@@ -98,7 +98,7 @@ public class GerenciadorRotas {
                 dicAeroporto.put(r.getOrigem(), aux);
             }
         }
-        return dicAeroporto;
+        //return dicAeroporto;
     }
 
     //retorna 20 rotas possíveis entre um ponto e outro, ordenados pelo numero de conexões e tempo e voo
@@ -109,26 +109,25 @@ public class GerenciadorRotas {
             RotaEscala r = new RotaEscala(buscaRota(apPartida, apChegada));
             listaEscala.add(r);
         }
-
-        for(Aeroporto ap: dicAeroporto.get(apPartida)){
-            if(dicAeroporto.get(ap).contains(apChegada)){
+        for(Aeroporto ap: dicAeroporto.get(apPartida)) {
+            if (dicAeroporto.get(ap).contains(apChegada)) {
                 RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
                 r.addRota(buscaRota(ap, apChegada));
                 listaEscala.add(r);
-            }
-        }
+            } else {
+                for (Aeroporto ap1 : dicAeroporto.get(ap)) {
+                    if (dicAeroporto.get(ap1) != null) {
+                        if (dicAeroporto.get(ap1).contains(apChegada) && ap1 != apPartida && ap != apChegada) {
+                            RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
+                            r.addRota(buscaRota(ap, ap1));
+                            r.addRota(buscaRota(ap1, apChegada));
+                            listaEscala.add(r);
+                        }
+                    }
 
-        for(Aeroporto ap: dicAeroporto.get(apPartida)){
-            for(Aeroporto ap1: dicAeroporto.get(ap)) {
-                if (dicAeroporto.get(ap1).contains(apChegada) && ap1!=apPartida && ap!=apChegada) {
-                    RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
-                    r.addRota(buscaRota(ap, ap1));
-                    r.addRota(buscaRota(ap1, apChegada));
-                    listaEscala.add(r);
                 }
             }
         }
-//
         Collections.sort(listaEscala, new Comparator<RotaEscala>() {
             @Override
             public int compare(RotaEscala um, RotaEscala outro){
@@ -145,74 +144,64 @@ public class GerenciadorRotas {
     //retorna 20 rotas possíveis entre um ponto e outro, mas desta vez com uma parada de escolha do usuario
     // ordenados pelo numero de conexões e tempo e voo
     public List<RotaEscala> possiveisRotasEscala(Aeroporto apPartida, Aeroporto apEscala,Aeroporto apChegada){
+        int i=0;
         listaEscala.clear();
         criaDicAp();
+        //if para verificar se há rota direta entre o apPartida, apEscala e apChegada
         if(dicAeroporto.get(apPartida).contains(apEscala) && dicAeroporto.get(apEscala).contains(apChegada)){
             RotaEscala r = new RotaEscala(buscaRota(apPartida, apEscala));
             r.addRota(buscaRota(apEscala,apChegada));
             listaEscala.add(r);
+            i++;
         }
-        if(dicAeroporto.get(apPartida).contains(apEscala)){
-            for(Aeroporto ap: dicAeroporto.get(apEscala)){
-                if(dicAeroporto.get(ap).contains(apChegada)){
-                    RotaEscala r = new RotaEscala(buscaRota(apPartida, apEscala));
-                    r.addRota(buscaRota(apEscala,ap));
-                    r.addRota(buscaRota(ap,apChegada));
-                    listaEscala.add(r);
+        //if para verificar se há uma rota com pelo menos duas escalas, sendo uma delas o aeroporto solicitado
+        if(dicAeroporto.get(apPartida).contains(apEscala)) {
+            for (Aeroporto ap : dicAeroporto.get(apEscala)) {
+                if(dicAeroporto.get(ap)!=null){
+                    if (dicAeroporto.get(ap).contains(apChegada) && ap != apPartida){
+                        RotaEscala r = new RotaEscala(buscaRota(apPartida, apEscala));
+                        r.addRota(buscaRota(apEscala, ap));
+                        r.addRota(buscaRota(ap, apChegada));
+                        listaEscala.add(r);
+                    }else{
+                        for (Aeroporto ap1 : dicAeroporto.get(ap)) {
+                            if(dicAeroporto.get(ap1)!=null){
+                                if (dicAeroporto.get(ap1).contains(apChegada)){
+                                    RotaEscala r = new RotaEscala(buscaRota(apPartida, apEscala));
+                                    r.addRota(buscaRota(apEscala, ap));
+                                    r.addRota(buscaRota(ap, ap1));
+                                    r.addRota(buscaRota(ap1, apChegada));
+                                    listaEscala.add(r);
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }else{
-            for(Aeroporto ap: dicAeroporto.get(apPartida)){
-                if(dicAeroporto.get(ap).contains(apEscala)){
-                    if(dicAeroporto.get(apEscala).contains(apChegada)) {
+            for (Aeroporto ap : dicAeroporto.get(apPartida)) {
+                if(dicAeroporto.get(ap)!=null){
+                    if (dicAeroporto.get(ap).contains(apEscala) && ap != apChegada && dicAeroporto.get(apEscala).contains(apChegada)){
                         RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
                         r.addRota(buscaRota(ap, apEscala));
                         r.addRota(buscaRota(apEscala, apChegada));
                         listaEscala.add(r);
-                    }
-                }
-            }
-        }
-        if(dicAeroporto.get(apPartida).contains(apEscala)){
-            for(Aeroporto ap: dicAeroporto.get(apEscala)){
-                for(Aeroporto ap1: dicAeroporto.get(ap)){
-                    if(dicAeroporto.get(ap1) != null){
-                        if(dicAeroporto.get(ap1).contains(apChegada)){
-                            RotaEscala r = new RotaEscala(buscaRota(apPartida, apEscala));
-                            r.addRota(buscaRota(apEscala,ap));
-                            r.addRota(buscaRota(ap,ap1));
-                            r.addRota(buscaRota(ap1,apChegada));
-                            listaEscala.add(r);
-                        }
-                    }
-                }
-            }
-        }else{
-            for(Aeroporto ap: dicAeroporto.get(apPartida)){
-                if(dicAeroporto.get(ap).contains(apEscala)){
-                    for(Aeroporto ap1:dicAeroporto.get(apEscala)){
-                        if(dicAeroporto.get(ap1).contains(apChegada)){
-                            RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
-                            r.addRota(buscaRota(ap, apEscala));
-                            r.addRota(buscaRota(apEscala,ap1));
-                            r.addRota(buscaRota(ap1,apChegada));
-                            listaEscala.add(r);
-                        }
-                    }
-                }else{
-                    for(Aeroporto ap1:dicAeroporto.get(ap)){
-                        if(dicAeroporto.get(ap1).contains(apEscala) && dicAeroporto.get(apEscala).contains(apChegada)){
-                            RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
-                            r.addRota(buscaRota(ap, ap1));
-                            r.addRota(buscaRota(ap1,apEscala));
-                            r.addRota(buscaRota(apEscala,apChegada));
-                            listaEscala.add(r);
+                    }else{
+                        for (Aeroporto ap1 : dicAeroporto.get(ap)) {
+                            if(dicAeroporto.get(ap1)!=null){
+                                if (dicAeroporto.get(ap1).contains(apEscala) && ap1 != apPartida && ap1!=apChegada && dicAeroporto.get(apEscala).contains(apChegada) && ap!=apChegada && ap!=apEscala) {
+                                    RotaEscala r = new RotaEscala(buscaRota(apPartida, ap));
+                                    r.addRota(buscaRota(ap, ap1));
+                                    r.addRota(buscaRota(ap1, apEscala));
+                                    r.addRota(buscaRota(apEscala, apChegada));
+                                    listaEscala.add(r);
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-//
         Collections.sort(listaEscala, new Comparator<RotaEscala>() {
             @Override
             public int compare(RotaEscala um, RotaEscala outro){
@@ -247,7 +236,7 @@ public class GerenciadorRotas {
                     for(Aeroporto ap2: dicAeroporto.get(ap1)){
                         double j=0;
                         j = buscaRota(apPartida,ap).getDuracao() + buscaRota(ap,ap1).getDuracao() + buscaRota(ap1,ap2).getDuracao();
-                        if(j<=hora && ap2!=apPartida && ap2!=ap1) {
+                        if(j<=hora && ap2!=apPartida && ap2!=ap && ap1!=apPartida) {
                             RotaEscala x2 = new RotaEscala(buscaRota(apPartida,ap));
                             x2.addRota(buscaRota(ap, ap1));
                             x2.addRota(buscaRota(ap1, ap2));
@@ -257,7 +246,6 @@ public class GerenciadorRotas {
                 }
             }
         }
-
         return listaEscala;
     }
     //retorna uma lista de rota

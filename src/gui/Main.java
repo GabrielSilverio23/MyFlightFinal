@@ -363,21 +363,21 @@ public class Main extends Application {
                 Tracado tr = new Tracado();
                 tr.setLabel(ap1.getOrigem().getCodigo());
                 tr.setWidth(5);
-                tr.setCor(new Color(0, 0, 0, 60));
+                tr.setCor(new Color(0, 255, 0, 60));
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
-                lstPoints.add(new MyWaypoint(Color.RED, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.RED, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
             tr2.setLabel(ap.getOrigem().getCodigo());
             tr2.setWidth(5);
-            tr2.setCor(new Color(0, 0, 0, 60));
+            tr2.setCor(new Color(0, 255, 0, 60));
             tr2.addPonto(ap.getOrigem().getLocal());
             tr2.addPonto(ap.getDestino().getLocal());
             gerenciador.addTracado(tr2);
-            lstPoints.add(new MyWaypoint(Color.RED, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.RED, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
@@ -404,8 +404,8 @@ public class Main extends Application {
         tr1.setCor(new Color(0, 255, 0, 100));
         tr1.addPonto(rota.getOrigem().getLocal());
         tr1.addPonto(rota.getDestino().getLocal());
-        lstPoints.add(new MyWaypoint(Color.CYAN, rota.getOrigem().getCodigo(), rota.getOrigem().getLocal(), 10));
-        lstPoints.add(new MyWaypoint(Color.CYAN, rota.getDestino().getCodigo(), rota.getDestino().getLocal(), 10));
+        lstPoints.add(new MyWaypoint(Color.BLUE, rota.getOrigem().getCodigo(), rota.getOrigem().getLocal(), 10));
+        lstPoints.add(new MyWaypoint(Color.BLUE, rota.getDestino().getCodigo(), rota.getDestino().getLocal(), 10));
         gerenciador.addTracado(tr1);
             for(Rota ap1:rota.getRotas()) {
                 Tracado tr = new Tracado();
@@ -415,8 +415,8 @@ public class Main extends Application {
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
-                lstPoints.add(new MyWaypoint(Color.CYAN, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.CYAN, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
 
 //        for(Rota ap2: rota.getRotas()) {
@@ -449,8 +449,8 @@ public class Main extends Application {
                     tr.addPonto(ap1.getOrigem().getLocal());
                     tr.addPonto(ap1.getDestino().getLocal());
                     gerenciador.addTracado(tr);
-                    lstPoints.add(new MyWaypoint(Color.RED, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
-                    lstPoints.add(new MyWaypoint(Color.RED, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
+                    lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                    lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
                 }
                 tr2.setLabel(ap.getOrigem().getCodigo());
                 tr2.setWidth(5);
@@ -458,15 +458,15 @@ public class Main extends Application {
                 tr2.addPonto(ap.getOrigem().getLocal());
                 tr2.addPonto(ap.getDestino().getLocal());
                 gerenciador.addTracado(tr2);
-                lstPoints.add(new MyWaypoint(Color.RED, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.RED, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
             }
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
         for (Rota airport : lstRota) {
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
         }
 
         // Para obter um ponto clicado no mapa, usar como segue:
@@ -477,7 +477,7 @@ public class Main extends Application {
         //gerenciador.clear();
         gerenciador.getMapKit().repaint();
     }
-
+    //faz a mesma função do item2, mas desta vez o usuario seleciona 1 aeroporto para fazer uma parada
     private void item4(String apPartida, String apEscala, String apChegada) {
 
         List<MyWaypoint> lstPoints = new ArrayList<>();
@@ -494,6 +494,8 @@ public class Main extends Application {
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
             tr2.setLabel(ap.getOrigem().getCodigo());
             tr2.setWidth(5);
@@ -501,13 +503,15 @@ public class Main extends Application {
             tr2.addPonto(ap.getOrigem().getLocal());
             tr2.addPonto(ap.getDestino().getLocal());
             gerenciador.addTracado(tr2);
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Rota airport : lstRota) {
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
-        }
+//        for (Rota airport : lstRota) {
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
+//        }
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
@@ -517,7 +521,7 @@ public class Main extends Application {
         //gerenciador.clear();
         gerenciador.getMapKit().repaint();
     }
-
+    //Desenha no mapa as rotas de acordo com o numero de conexoes selecionadas pelo usuario
     private void conexoes2(String apPartida, String apEscala, String apChegada, Integer a){
         List<MyWaypoint> lstPoints = new ArrayList<>();
         gerenciador.clear();
@@ -535,6 +539,8 @@ public class Main extends Application {
                     tr.addPonto(ap1.getOrigem().getLocal());
                     tr.addPonto(ap1.getDestino().getLocal());
                     gerenciador.addTracado(tr);
+                    lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                    lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
                 }
                 tr2.setLabel(ap.getOrigem().getCodigo());
                 tr2.setWidth(5);
@@ -542,14 +548,16 @@ public class Main extends Application {
                 tr2.addPonto(ap.getOrigem().getLocal());
                 tr2.addPonto(ap.getDestino().getLocal());
                 gerenciador.addTracado(tr2);
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
             }
         }
         // Adiciona os locais de cada aeroporto (sem repetir) na lista de
         // waypoints
-        for (Rota airport : lstRota) {
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
-            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
-        }
+//        for (Rota airport : lstRota) {
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getOrigem().getCodigo(), airport.getOrigem().getLocal(), 10));
+//            lstPoints.add(new MyWaypoint(Color.RED, airport.getDestino().getCodigo(), airport.getDestino().getLocal(), 10));
+//        }
 
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
@@ -575,6 +583,8 @@ public class Main extends Application {
                 tr.addPonto(ap1.getOrigem().getLocal());
                 tr.addPonto(ap1.getDestino().getLocal());
                 gerenciador.addTracado(tr);
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getOrigem().getCodigo(), ap1.getOrigem().getLocal(), 10));
+                lstPoints.add(new MyWaypoint(Color.BLUE, ap1.getDestino().getCodigo(), ap1.getDestino().getLocal(), 10));
             }
             tr2.setLabel(ap.getOrigem().getCodigo());
             tr2.setWidth(5);
@@ -582,19 +592,9 @@ public class Main extends Application {
             tr2.addPonto(ap.getOrigem().getLocal());
             tr2.addPonto(ap.getDestino().getLocal());
             gerenciador.addTracado(tr2);
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getOrigem().getCodigo(), ap.getOrigem().getLocal(), 10));
+            lstPoints.add(new MyWaypoint(Color.BLUE, ap.getDestino().getCodigo(), ap.getDestino().getLocal(), 10));
         }
-        // Adiciona os locais de cada aeroporto (sem repetir) na lista de
-        // waypoints
-        for (RotaEscala re : lstRota) {
-            for(Rota r: re.getRotas()){
-                lstPoints.add(new MyWaypoint(Color.RED, r.getOrigem().getCodigo(), r.getOrigem().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.RED, r.getDestino().getCodigo(), r.getDestino().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.RED, re.getOrigem().getCodigo(), re.getOrigem().getLocal(), 10));
-                lstPoints.add(new MyWaypoint(Color.RED, re.getDestino().getCodigo(), re.getDestino().getLocal(), 10));
-            }
-
-        }
-
         // Para obter um ponto clicado no mapa, usar como segue:
         GeoPosition pos = gerenciador.getPosicao();
         // Informa o resultado para o gerenciador

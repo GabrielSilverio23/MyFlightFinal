@@ -31,9 +31,12 @@ public class RotaEscala extends Rota implements Comparable<Rota>{
         double velocidade = 805.1;
 
         double duracaoH = 0.5+distancia*1.0/velocidade;
-        for (Rota escala : rotas) {
-            duracaoH += escala.getDuracao();
+        if(rotas!=null){
+            for (Rota escala : rotas) {
+                duracaoH += escala.getDuracao();
+            }
         }
+
         duracaoH += rotas.size() * 0.5;
         return duracaoH;
     }
